@@ -67,4 +67,3 @@ package.json
 phpcs.xml
 
 extensions/Widgets/compiled_templates/
-vendor/
