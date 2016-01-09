@@ -4,6 +4,7 @@
  * @author Stephan Gambke
  */
 
+/*global jQuery, mediaWiki */
 /*global confirm */
 
 ( function ( $, mw ) {

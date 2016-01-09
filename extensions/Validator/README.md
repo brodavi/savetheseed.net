@@ -23,11 +23,11 @@ the git repository and take care of loading yourself.
 To add this package as a local, per-project dependency to your project, simply add a
 dependency on `mediawiki/validator` to your project's `composer.json` file.
 Here is a minimal example of a `composer.json` file that just defines a dependency on
-Validator 2.0:
+Validator 1.0:
 
     {
         "require": {
-            "mediawiki/validator": "2.0.*"
+            "mediawiki/validator": "1.0.*"
         }
     }
 
@@ -46,35 +46,10 @@ Simply include the entry point in your LocalSettings.php file:
 
 Validator has been written by
 [Jeroen De Dauw](https://www.mediawiki.org/wiki/User:Jeroen_De_Dauw)
-to support [Maps](https://github.com/JeroenDeDauw/Maps)
+to support [Maps](https://www.mediawiki.org/wiki/Extension:Maps)
 and [Semantic MediaWiki](https://semantic-mediawiki.org/).
 
 ## Release notes
-
-### Version 2.0.4 (2014-06-25)
-
-* Updated used ParamProcessor version from ~1.0.0 to ~1.1
-
-### Version 2.0.3 (2014-06-16)
-
-* Removed obsolete magic words internationalization file
-
-### Version 2.0.2 (2014-06-14)
-
-* Fixed issue in deprecated ParserHook class
-
-### Version 2.0.1 (2014-06-14)
-
-* Removed #listerrors and #describe parser hooks
-
-### Version 2.0 (2014-06-14)
-
-* Dropped deprecated class aliases
-* Dropped deprecated ParamProcessor.php entry point
-* Use composer based autoloading
-* Added TravisCI and ScrutinizerCI integration
-* Changed minimum MediaWiki version from 1.16 to 1.17
-* Migrated messages to the new MediaWiki i18n JSON format
 
 ### Version 1.0.1 (2014-03-25)
 

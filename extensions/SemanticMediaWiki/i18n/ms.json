@@ -1,8 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
-			"Anakmalaysia",
-			"Pizza1016"
+			"Anakmalaysia"
 		]
 	},
 	"smw-desc": "Meningkatkan kebolehcapaian wiki anda – baik untuk mesin mahupun manusia ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentasi])",
@@ -13,7 +12,7 @@
 	"smw_concept_description": "Keterangan konsep \"$1\"",
 	"smw_no_concept_namespace": "Konsep hanya boleh ditakrifkan di laman-laman dalam ruang nama Concept:.",
 	"smw_multiple_concepts": "Setiap laman konsep hanya boleh ada satu takrifan konsep.",
-	"smw_concept_cache_miss": "Konsep \"$1\" tidak boleh digunakan buat masa ini kerana konfigurasi wiki memerlukannya untuk dikomput di luar talian.\nJika masalah ini masih berlarutan selepas beberapa ketika, mintalah penyelia tapak anda untuk menyediakan konsep ini.",
+	"smw_concept_cache_miss": "Konsep \"$1\" tidak boleh digunakan buat masa ini kerana konfigurasi wiki memerlukannya untuk dikomput di luar talian.\nJika masalah ini masih berlarutan selepas beberapa ketika, mintalah pentadbir tapak anda untuk menyediakan konsep ini.",
 	"smw_noinvannot": "Nilai tidak dapat diberikan kepada sifat songsang.",
 	"version-semantic": "Sambungan semantik",
 	"smw_baduri": "URI yang berbentuk \"$1\" tidak dibenarkan.",
@@ -50,7 +49,5 @@
 	"smw_result_next": "Berikutnya",
 	"smw_result_results": "Hasil",
 	"smw_result_noresults": "Tiada hasil.",
-	"smwadmin": "Fungsi penyelia untuk Semantic MediaWiki",
-	"smw-concept-cache-text": "Konsep ini mempunyai sejumlah $1 laman, dan kali terakhir dikemaskinikan pada $3, $2.",
-	"smw-livepreview-loading": "Memuatkan..."
+	"smwadmin": "Fungsi pentadbir untuk Semantic MediaWiki"
 }

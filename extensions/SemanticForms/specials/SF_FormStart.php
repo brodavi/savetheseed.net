@@ -22,17 +22,16 @@ class SFFormStart extends SpecialPage {
 	}
 
 	function execute( $query ) {
+		global $wgOut, $wgRequest;
+
 		$this->setHeaders();
 
-		$out = $this->getOutput();
-		$req = $this->getRequest();
+		$form_name = $wgRequest->getVal( 'form' );
+		$target_namespace = $wgRequest->getVal( 'namespace' );
+		$super_page = $wgRequest->getVal( 'super_page' );
+		$params = $wgRequest->getVal( 'params' );
 
-		$form_name = $req->getVal( 'form' );
-		$target_namespace = $req->getVal( 'namespace' );
-		$super_page = $req->getVal( 'super_page' );
-		$params = $req->getVal( 'params' );
-
-		// If the query string did not contain a form name, try the URL.
+		// If the query string did not contain a form name, try the URL
 		if ( ! $form_name ) {
 			$queryparts = explode( '/', $query, 2 );
 			$form_name = isset( $queryparts[0] ) ? $queryparts[0] : '';
@@ -54,9 +53,9 @@ class SFFormStart extends SpecialPage {
 		$form_title = Title::makeTitleSafe( SF_NS_FORM, $form_name );
 
 		// Handle submission of this form.
-		$form_submitted = $req->getCheck( 'page_name' );
+		$form_submitted = $wgRequest->getCheck( 'page_name' );
 		if ( $form_submitted ) {
-			$page_name = $req->getVal( 'page_name' );
+			$page_name = $wgRequest->getVal( 'page_name' );
 			// This form can be used to create a sub-page for an
 			// existing page
 			if ( !is_null( $super_page ) && $super_page !== '' ) {
@@ -74,7 +73,7 @@ class SFFormStart extends SpecialPage {
 				// message.
 				$page_title = Title::newFromText( $page_name );
 				if ( !$page_title ) {
-					$out->addHTML( wfMessage( 'sf_formstart_badtitle', $page_name )->escaped() );
+					$wgOut->addHTML( wfMessage( 'sf_formstart_badtitle', $page_name )->escaped() );
 					return;
 				} else {
 					$this->doRedirect( $form_name, $page_name, $params );
@@ -111,7 +110,7 @@ END;
 			$text .= "\n\t" . Html::input( null, wfMessage( 'sf_formstart_createoredit' )->text(), 'submit' ) . "\n";
 			$text .= "\t</form>\n";
 		}
-		$out->addHTML( $text );
+		$wgOut->addHTML( $text );
 	}
 
 	/**
@@ -127,7 +126,7 @@ END;
 	}
 
 	function doRedirect( $form_name, $page_name, $params ) {
-		$out = $this->getOutput();
+		global $wgOut;
 
 		$page_title = Title::newFromText( $page_name );
 		if ( $page_title->exists() ) {
@@ -165,13 +164,13 @@ END;
 			// identify the latter because they show up as arrays.
 			foreach ( $_REQUEST as $key => $val ) {
 				if ( is_array( $val ) ) {
-					$redirect_url .= ( strpos( $redirect_url, '?' ) > - 1 ) ? '&' : '?';
-					// Re-add the key (i.e. the template
-					// name), so we can make a nice query
-					// string snippet out of the whole
-					// thing.
-					$wrapperArray = array( $key => $val );
-					$redirect_url .= urldecode( http_build_query( $wrapperArray ) );
+					$template_name = urlencode( $key );
+					foreach ( $val as $field_name => $value ) {
+						$field_name = urlencode( $field_name );
+						$value = urlencode( $value );
+						$redirect_url .= ( strpos( $redirect_url, '?' ) > - 1 ) ? '&' : '?';
+						$redirect_url .= $template_name . '[' . $field_name . ']=' . $value;
+					}
 				} elseif ( $key == 'preload' ) {
 					$redirect_url .= ( strpos( $redirect_url, '?' ) > - 1 ) ? '&' : '?';
 					$redirect_url .= "$key=$val";
@@ -184,18 +183,19 @@ END;
 			$redirect_url .= $params;
 		}
 
-		$out->setArticleBodyOnly( true );
-
+		$wgOut->setArticleBodyOnly( true );
 		// Show "loading" animated image while people wait for the
 		// redirect.
 		global $sfgScriptPath;
-		$text = "\t" . Html::rawElement( 'p', array( 'style' => "position: absolute; left: 45%; top: 45%;" ), Html::element( 'img', array( 'src' => "$sfgScriptPath/skins/loading.gif" ) ) );
-		$text .= "\t" . Html::element( 'meta', array( 'http-equiv' => 'refresh', 'content' => "0; url=$redirect_url" ) );
-		$out->addHTML( $text );
+		$text = <<<END
+	<p style="position: absolute; left: 45%; top: 45%;">
+	<img src="$sfgScriptPath/skins/loading.gif" />
+	</p>
+ 	<meta http-equiv="refresh" content="0; url=$redirect_url" />
+
+END;
+		$wgOut->addHTML( $text );
 		return;
 	}
 
-	protected function getGroupName() {
-		return 'sf_group';
-	}
 }

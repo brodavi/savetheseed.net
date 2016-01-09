@@ -3,15 +3,10 @@
 		"authors": [
 			"Chrisportelli",
 			"Roderick Mallia",
-			"පසිඳු කාවින්ද",
-			"Leli Forte"
+			"පසිඳු කාවින්ද"
 		]
 	},
-	"smw_exportrdf_submit": "Esporta",
 	"smw_purge": "Aġġorna",
-	"browse": "Esplora l-wiki",
 	"smw_browse_go": "Mur",
-	"smw_result_prev": "Ta' qabel",
-	"smw-livepreview-loading": "Tniżżil fil-progress…",
-	"smw-sp-searchbyproperty-resultlist-header": "Lista ta' riżultati"
+	"smw_result_prev": "Ta' qabel"
 }

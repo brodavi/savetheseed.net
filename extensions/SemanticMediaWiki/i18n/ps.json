@@ -35,6 +35,5 @@
 	"smw_smwadmin_return": "$1 ته ورګرځېدل",
 	"smw_smwadmin_datarefreshstopconfirm": "هو، زه ډاډه يم.",
 	"smw-ui-tooltip-title-info": "مالومات",
-	"smw-ui-tooltip-title-warning": "تېروتنه",
-	"smw-livepreview-loading": "رابرسېرېږي..."
+	"smw-ui-tooltip-title-warning": "تېروتنه"
 }

@@ -25,10 +25,6 @@ class SFForms extends SpecialPage {
 		$rep = new FormsPage();
 		return $rep->execute( $query );
 	}
-
-	protected function getGroupName() {
-		return 'pages';
-	}
 }
 
 /**
@@ -36,7 +32,10 @@ class SFForms extends SpecialPage {
  */
 class FormsPage extends QueryPage {
 	public function __construct( $name = 'Forms' ) {
-		parent::__construct( $name );
+		// For MW 1.17
+		if ( $this instanceof SpecialPage ) {
+			parent::__construct( $name );
+		}
 	}
 	
 	function getName() {
@@ -48,7 +47,7 @@ class FormsPage extends QueryPage {
 	function isSyndicated() { return false; }
 
 	function getPageHeader() {
-		$header = Html::element( 'p', null, wfMessage( 'sf_forms_docu' )->text() );
+		$header = '<p>' . wfMessage( 'sf_forms_docu' )->text() . "</p><br />\n";
 		return $header;
 	}
 

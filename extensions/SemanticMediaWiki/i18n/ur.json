@@ -1,8 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
-			"පසිඳු කාවින්ද",
-			"عرفان ارشد"
+			"පසිඳු කාවින්ද"
 		]
 	},
 	"smw_printername_list": "فہرست",
@@ -19,7 +18,6 @@
 	"smw_sbv_property": "جائداد:",
 	"smw_sbv_value": "قیمت:",
 	"smw_sbv_submit": "نتائج تلاش کریں",
-	"browse": "ویکی میں براؤز کریں",
 	"smw_browselink": "کی خصوصیات کو براؤز کریں",
 	"smw_browse_go": "جانا",
 	"smw_pp_from": "صفحہ سے",

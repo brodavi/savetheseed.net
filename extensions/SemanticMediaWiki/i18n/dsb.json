@@ -220,9 +220,11 @@
 	"smw_smwadmin_docu": "Toś ten specialny bok śi pomaga za instalaciju a aktualizaciju a href=\"https://semantic-mediawiki.org\">Semantic MediaWiki</a>. Mysli se na zawěsćenje gódnotnych datow, nježli až wuwjeźoš administratiwne funkcije.",
 	"smw_smwadmin_db": "Instalacija a aktualizacija datoweje banki",
 	"smw_smwadmin_dbdocu": "Semantic MediaWiki trjeba rozšyrjenja za datowu banku MediaWiki, aby semantiske daty składował. Slědujuca funkcija zawěsćijo, až twója datowa banka se pórědnje zarědujo.\nZměny, kótarež cynje se w toś tom kšacu, njewobwliwuju zbytk datoweje banki MediaWiki a daju se lažko anulěrowaś, jolic póžedane.\nToś te zarědowańska funkcija móžo se někotare razy wugbaś, mimo až zawinuju škódu, ale jo trěbna jano jaden raz pśi instalaciji abo aktualizaciji.",
-	"smw_smwadmin_permissionswarn": "Jolic operacija raźi se z SQL-zmólkami, wužywaŕ datoweje banki, kótaregož twój wiki wužywa (skontrolěruj twóju dataja LocalSettings.php), nejskerjej njama dosegajuce pšawa.\nPak zwól toś tomu wužywarjeju pśidatne pšawa za napóranje a lašowanje tabelow, zapódaj nachylu twójo admininistratorowe wužywarske mě w LocalSettings.php, pak wužyj wótglědowański skript <code>setupStore.php</code>, kótarež mógu wósobinske pódaśa administratora wužywaś.",
+	"smw_smwadmin_permissionswarn": "Jolic operacija raźi se z SQL-zmólkami, wužywaŕ datoweje banki, kótaregož twój wiki wužywa (skontrolěruj twóju dataja LocalSettings.php), nejskerjej njama dosegajuce pšawa.\nPak zwól toś tomu wužywarjeju pśidatne pšawa za napóranje a lašowanje tabelow, zapódaj nachylu twójo admininistratorowe wužywarske mě w LocalSettings.php, pak wužyj wótglědowański skript <code>SMW_setup.php</code>, kótarež mógu wósobinske pódaśa administratora wužywaś.",
 	"smw_smwadmin_dbbutton": "Tabele inicializěrowaś abo aktualizěrowaś",
 	"smw_smwadmin_announce": "Twój wiki pśipowěźeś",
+	"smw_smwadmin_announcedocu": "Semantic Mediawiki ma websłužbu za wuzjawjenje nowych semantiskich wikisedłow.\nTo se wužywa, aby wuźaržowało lisćinu zjawnych sedłow, kótarež wužywaju Semantic MediaWiki, głownje aby  pomagało <a href=\"https://semantic-mediawiki.org/wiki/SMW_Project\">projektoju Semantic MediaWiki</a> pśeglěd typiskich wužywanjow Semantic MediaWiki daś.\nGlědaj startowy bok Semantic MediaWiki za <a href=\"https://semantic-mediawiki.org/wiki/Registry\">dalšne informacije wó toś tej słužbje</a>.",
+	"smw_smwadmin_announcebutton": "Tłoc na slědujucy tłocašk, aby pósłał swój wikiijowy URL k tej słužbje.\nSłužba njebuźo wikije registrěrowaś, kótarež njejsu zjawnje pśistupne a buźo pśistupne informacije jano zjawnje składowaś.",
 	"smw_smwadmin_datarefresh": "Reparatura a aktualizacija datow",
 	"smw_smwadmin_datarefreshdocu": "Jo móžno, wšykne daty Semantic MediaWiki wótnowiś, kótarež bazěruju na aktualnem wopśimjeśu wikija.\nTo móžo wužytne byś, aby se wobškóźone daty pórěźili abo daty aktualizěrowali, jolic interny format jo se změnił pśez aktualizaciju softwara.\nAktualizacija pśewjedujo se bok pó boku a njebuźo se ned kóńcyś.\nSlědujuce pokazujo, lěc aktualizacija rowno wótběgujo a dowólujo śi aktualizacije startowaś abo zastajiś (snaźkuli toś ta funkcija jo se wót administratora sedła znjemóžniła).",
 	"smw_smwadmin_datarefreshprogress": "<strong>Aktualizacija se rowno wótměwa.</strong>\nJo normalne, až aktualizacija jano pómałem póstupujo, dokulaž aktualizěrujo daty jano w małych porcijach kuždy raz, gaž wužywaŕ ma pśistup na wiki.\nAby skóńcył toś tu aktualizaciju malsnjeje, móžoš wótwardowański skript MediaWiki <code>runJobs.php</code> zawołaś (wužyj opciju <code>--maxjobs 1000</code>, aby wobgranicował licbu aktualizacijow, kótarež se naraz pśewjadu).\nLicony póstup aktualneje aktualizacije:",
@@ -262,6 +264,7 @@
 	"smw-concept-cache-text": "Koncept ma dogromady $1 {{PLURAL:$1|bok|boka|boki|bokow}} a jo se $2 slědny raz zaktualizěrował.",
 	"smw_concept_header": "Boki koncepta \"$1\"",
 	"smw_conceptarticlecount": "$1 {{PLURAL:$|bok se pokazujo|boka se pokazujotej|boki se pokazuju|bokow se pokazujo}}, {{PLURAL:$1|kótaryž słuša|kótarejž słušatej|kótarež słušaju|kótarež słuša}} k tomu konceptoju.",
+	"smw-qp-aggregatable-empty-data": "Pominane kopjobne daty njejsu dali se zwobrazniś dla njedosegajucych wuběrańskich kriterijow.",
 	"right-smw-admin": "Administraciske nadawki (Semantic MediaWiki)",
 	"group-smwadministrator": "Administratory Semantic MediaWiki",
 	"group-smwadministrator-member": "{{GENDER:$1|SMW-administrator|SMW-administratorka}}",
@@ -269,6 +272,5 @@
 	"action-smw-admin": "administraciske nadawki Semantic MediaWiki",
 	"smw-sp-properties-header-label": "Lisćina kakosćow",
 	"smw-sp-admin-settings-title": "Konfiguraciske nastajenja",
-	"smw-sp-admin-settings-button": "Lisćinu nastajenjow napóraś",
-	"smw-livepreview-loading": "Lodowanje …"
+	"smw-sp-admin-settings-button": "Lisćinu nastajenjow napóraś"
 }

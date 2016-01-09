@@ -1,11 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Gitartha.bordoloi",
-			"IKHazarika"
+			"Gitartha.bordoloi"
 		]
 	},
-	"browse": "ব্ৰাউজ ৱিকি",
-	"smw_result_results": "ফলাফল",
-	"smw-livepreview-loading": "ল'ড হৈ আছে…"
+	"smw_result_results": "ফলাফল"
 }

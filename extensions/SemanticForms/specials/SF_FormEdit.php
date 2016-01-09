@@ -11,7 +11,7 @@
 /**
  * @ingroup SFSpecialPages
  */
-class SFFormEdit extends UnlistedSpecialPage {
+class SFFormEdit extends SpecialPage {
 
 	public $mTarget;
 	public $mForm;
@@ -25,6 +25,9 @@ class SFFormEdit extends UnlistedSpecialPage {
 	}
 
 	function execute( $query ) {
+
+		wfProfileIn( __METHOD__ );
+
 		$this->setHeaders();
 
 		$this->mForm = $this->getRequest()->getText( 'form' );
@@ -40,10 +43,12 @@ class SFFormEdit extends UnlistedSpecialPage {
 
 		$alt_forms = $this->getRequest()->getArray( 'alt_form' );
 
-		$this->printForm( $this->mForm, $this->mTarget, $alt_forms );
+		self::printForm( $this->mForm, $this->mTarget, $alt_forms );
+
+		wfProfileOut( __METHOD__ );
 	}
 
-	function printAltFormsList( $alt_forms, $target_name ) {
+	static function printAltFormsList( $alt_forms, $target_name ) {
 		$text = "";
 		$fe = SpecialPageFactory::getPage( 'FormEdit' );
 		$fe_url = $fe->getTitle()->getFullURL();
@@ -52,28 +57,27 @@ class SFFormEdit extends UnlistedSpecialPage {
 			if ( $i++ > 0 ) {
 				$text .= ', ';
 			}
-			$altFormURL = $fe_url . '/' . rawurlencode( $alt_form ) . '/' . rawurlencode( $target_name );
-			$text .= Html::element( 'a',
-				array( 'href' => $altFormURL ),
-				str_replace( '_', ' ', $alt_form )
-			);
+			$text .= "<a href=\"$fe_url/$alt_form/$target_name\">" . str_replace( '_', ' ', $alt_form ) . '</a>';
 		}
 		return $text;
 	}
 
-	function printForm( $form_name, $targetName, $alt_forms = array( ) ) {
-		$out = $this->getOutput();
-		$req = $this->getRequest();
+	static function printForm( &$form_name, &$targetName, $alt_forms = array( ) ) {
+		global $wgOut, $wgRequest;
 
-		$module = new SFAutoeditAPI( new ApiMain(), 'sfautoedit' );
+		if ( method_exists( 'ApiMain', 'getContext' ) ) {
+			$module = new SFAutoeditAPI( new ApiMain(), 'sfautoedit' );
+		} else { // TODO: remove else branch when raising supported version to MW 1.19
+			$module = new SFAutoeditAPI( new ApiMain( $wgRequest ), 'sfautoedit' );
+		}
 		$module->setOption( 'form', $form_name );
 		$module->setOption( 'target', $targetName );
 
-		if ( $req->getCheck( 'wpSave' ) || $req->getCheck( 'wpPreview' ) || $req->getCheck( 'wpDiff' ) ) {
+		if ( $wgRequest->getCheck( 'wpSave' ) || $wgRequest->getCheck( 'wpPreview' ) || $wgRequest->getCheck( 'wpDiff' ) ) {
 			// If the page was submitted, form data should be
 			// complete => do not preload (unless it's a partial
 			// form).
-			if ( $req->getCheck( 'partial' ) ) {
+			if ( $wgRequest->getCheck( 'partial' ) ) {
 				$module->setOption( 'preload', true );
 			} else {
 				$module->setOption( 'preload', false );
@@ -82,9 +86,9 @@ class SFFormEdit extends UnlistedSpecialPage {
 			// If target page exists, do not overwrite it with
 			// preload data; just preload the page's data.
 			$module->setOption( 'preload', true );
-		} else if ( $req->getCheck( 'preload' ) ) {
+		} else if ( $wgRequest->getCheck( 'preload' ) ) {
 			// if page does not exist and preload parameter is set, pass that on
-			$module->setOption( 'preload', $req->getText( 'preload' ) );
+			$module->setOption( 'preload', $wgRequest->getText( 'preload' ) );
 		} else {
 			// nothing set, so do not set preload
 		}
@@ -113,14 +117,12 @@ class SFFormEdit extends UnlistedSpecialPage {
 			}
 		}
 
-		// Override the default title for this page if a title was
-		// specified in the form.
+		// override the default title for this page if a title was specified in the form
 		$result = $module->getOptions();
 		$targetTitle = Title::newFromText( $result[ 'target' ] );
 
 
-		// Set page title depending on whether an explicit title was
-		// specified in the form definition.
+		// set page title depending on whether an explicit title was specified in the form definition
 		if ( array_key_exists( 'formtitle', $result ) ) {
 
 			// set page title depending on whether the target page exists
@@ -130,8 +132,7 @@ class SFFormEdit extends UnlistedSpecialPage {
 				$pageTitle = $result[ 'formtitle' ] . ': ' . $targetName;
 			}
 		} elseif ( $result[ 'form' ] !== '' ) {
-			// Set page title depending on whether the target page
-			// exists.
+			// set page title depending on whether the target page exists
 			if ( empty( $targetName ) ) {
 				$pageTitle = wfMessage( 'sf_formedit_createtitlenotarget', $result[ 'form' ] )->text();
 			} elseif ( $targetTitle->exists() ) {
@@ -151,10 +152,10 @@ class SFFormEdit extends UnlistedSpecialPage {
 			// display error message if the form is not specified in the URL
 			$pageTitle = wfMessage( 'formedit' )->text();
 			$text .= Html::element( 'p', array( 'class' => 'error' ), wfMessage( 'sf_formedit_badurl' )->text() ) . "\n";
-			$out->addHTML( $text );
+			$wgOut->addHTML( $text );
 		}
 
-		$out->setPageTitle( $pageTitle );
+		$wgOut->setPageTitle( $pageTitle );
 		if ( count( $alt_forms ) > 0 ) {
 			$text .= '<div class="infoMessage">';
 			if ( $result[ 'form' ] != '' ) {
@@ -162,30 +163,27 @@ class SFFormEdit extends UnlistedSpecialPage {
 			} else {
 				$text .= wfMessage( 'sf_formedit_altformsonly' )->escaped();
 			}
-			$text .= ' ' . $this->printAltFormsList( $alt_forms, $targetName );
+			$text .= ' ' . self::printAltFormsList( $alt_forms, $targetName );
 			$text .= "</div>\n";
 		}
 
 		$text .= '<form name="createbox" id="sfForm" method="post" class="createbox">';
 		$pre_form_html = '';
-		Hooks::run( 'sfHTMLBeforeForm', array( &$targetTitle, &$pre_form_html ) );
+		wfRunHooks( 'sfHTMLBeforeForm', array( &$targetTitle, &$pre_form_html ) );
 		$text .= $pre_form_html;
 		if ( isset( $result[ 'formHTML' ] ) ) {
 			$text .= $result[ 'formHTML' ];
 		}
 
-		SFUtils::addFormRLModules();
+		SFUtils::addJavascriptAndCSS();
 
 		if ( isset( $result[ 'formJS' ] ) ) {
-			$out->addScript( '		<script type="text/javascript">' . "\n$result[formJS]\n" . '</script>' . "\n" );
+			$wgOut->addScript( '		<script type="text/javascript">' . "\n$result[formJS]\n" . '</script>' . "\n" );
 		}
 
-		$out->addHTML( $text );
+		$wgOut->addHTML( $text );
 
 		return null;
 	}
 
-	protected function getGroupName() {
-		return 'sf_group';
-	}
 }

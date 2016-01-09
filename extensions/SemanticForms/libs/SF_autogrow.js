@@ -21,6 +21,12 @@ function autoGrowSetDefaultValues(textArea) {
 	autoGrowRowsDefault[id] = textArea.rows;
 }
 
+function autoGrowBindEvents(textArea) {
+	textArea.onkeyup = function() {
+		autoGrow(textArea);
+	}
+}
+
 function autoGrow(textArea) {
     var linesCount = 0;
     var lines = textArea.value.split('\n');
@@ -29,18 +35,10 @@ function autoGrow(textArea) {
         linesCount += Math.floor((lines[i].length / autoGrowColsDefault[textArea.id]) + 1);
     }
 
-    if (linesCount >= autoGrowRowsDefault[textArea.id]) {
+    if (linesCount >= autoGrowRowsDefault[textArea.id])
         textArea.rows = linesCount + 1;
-    }
-    else {
+    else
         textArea.rows = autoGrowRowsDefault[textArea.id];
-    }
-}
-
-function autoGrowBindEvents(textArea) {
-    textArea.onkeyup = function() {
-        autoGrow(textArea);
-    };
 }
 
 // jQuery method

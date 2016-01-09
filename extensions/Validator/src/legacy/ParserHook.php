@@ -1,7 +1,5 @@
 <?php
 
-use ParamProcessor\ParamDefinition;
-use ParamProcessor\ProcessingError;
 use ParamProcessor\Processor;
 
 /**
@@ -56,7 +54,7 @@ abstract class ParserHook {
 	/**
 	 * @since 0.4
 	 *
-	 * @var Processor
+	 * @var Validator
 	 */
 	protected $validator;
 

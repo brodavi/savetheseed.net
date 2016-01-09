@@ -54,7 +54,6 @@
 	"smw_attributearticlecount": "Prikazujem $1 {{PLURAL:$1|stran|strani}} ki uporabljajo to lastnost.",
 	"smw_subproperty_header": "Podlastnosti",
 	"smw_subpropertyarticlecount": "Ta lastnost ima {{PLURAL:$1|naslednjo $1 podlastnost|naslednji $1 podlastnosti|naslednje $1 podlastnosti|naslednjih $1 podlastnosti}}:",
-	"specialpages-group-smw_group": "Semantični MediaWiki",
 	"exportrdf": "Izvoz strani v RDF",
 	"smw_exportrdf_docu": "Ta stran vam omogoča, da dobite podatke iz strani v formatu RDF.\nZa izvoz strani vpišite njihove naslove v spodnjem oknu, po en naslov na vrstico.",
 	"smw_exportrdf_recursive": "Rekurzivno izvozite vse povezane strani.\nUpoštevajte, da lahko velik rezultat!",
@@ -72,7 +71,7 @@
 	"smw_wantedproperty_template": "$1 ( $2 {{PLURAL:$2|uporaba|uporabi|uporabe|uporab}})",
 	"smw_purge": "Osveži",
 	"types": "Tipi",
-	"smw_types_docu": "V nadaljevanju sledi [https://semantic-mediawiki.org/wiki/Help:List_of_datatypes seznam] vseh podatkovnih tipov, ki so lahko določeni za lastnosti.",
+	"smw_types_docu": "V nadaljevanju je seznam vseh podatkovnih tipov, ki so lahko določeni za lastnosti.",
 	"semanticstatistics": "Semantična statistika",
 	"smw_semstats_text": "Ta wiki vsebuje '''$1''' {{PLURAL:$1| vrednost | vrednosti}} lastnosti za skupno '''$2''' [[Special:Properties|{{PLURAL:$2|lastnost|različnih lastnosti}}]].\n'''$3''' {{PLURAL:$3|lastnost ima|lastnosti imata|lastnosti imajo|lastnosti ima}} lastno stran, in podatkovni tip je določen za '''$4''' od teh.\nNekatere od obstoječih lastnosti so lahko [[Special:UnusedProperties|neuporabljene lastnosti]].\nLastnosti, ki še vedno nimajo strani se nahajajo na [[Special:WantedProperties|seznamu želenih lastnosti]].",
 	"ask": "Semantično iskanje",
@@ -122,12 +121,10 @@
 	"smw_smwadmin_datarefresh": "Nadgraditev in popravilo podatkov",
 	"smw_smwadmin_datarefreshbutton": "Začni posodabljati podatke",
 	"smw_smwadmin_datarefreshstop": "Ustavi to posodobitev",
-	"smw_smwadmin_datarefreshstopconfirm": "Da, {{GENDER:$1|prepričan|prepričana}} sem.",
+	"smw_smwadmin_datarefreshstopconfirm": "Da, prepričan sem.",
 	"smw_smwadmin_smwhomepage": "Celotna uporabniška dokumentacija za Semantic MediaWiki je na razpolago na naslovu <b><a href=\"https://semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw_smwadmin_mediazilla": "Hrošče lahko prijavite na <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHubu</a>.",
 	"smw_adminlinks_datastructure": "Zgradba podatkov",
 	"smw_adminlinks_displayingdata": "Prikaz podatkov",
-	"prefs-smw": "Semantični MediaWiki",
-	"smw_concept_header": "Strani zasnove »$1«",
-	"smw-livepreview-loading": "Nalaganje ..."
+	"smw_concept_header": "Strani zasnove »$1«"
 }

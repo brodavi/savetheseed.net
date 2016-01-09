@@ -23,9 +23,9 @@
 				if ( data.query && data.query.pages ) {
 					var pages = data.query.pages;
 
-					for ( var p = 0; p < pages.length; p++ ) {
+					for ( p in pages ) {
 						var info = pages[p].imageinfo;
-						for ( var i = 0; i < info.length; i++ ) {
+						for ( i in info ) {
 							callback( info[i].thumburl );
 							return;
 						}

@@ -3,8 +3,7 @@
 		"authors": [
 			"CERminator",
 			"DzWiki",
-			"Sociologist",
-			"Palapa"
+			"Sociologist"
 		]
 	},
 	"smw_viewasrdf": "RDF fid",
@@ -39,7 +38,6 @@
 	"smw_ask_hidequery": "Sakrij upit",
 	"smw_sbv_property": "Svojstvo:",
 	"smw_sbv_value": "Vrijednost:",
-	"browse": "Pretražuj wiki",
 	"smw_browselink": "Pregled svojstava",
 	"smw_browse_go": "Idi",
 	"smw_inverse_label_default": "$1 od",
@@ -47,6 +45,5 @@
 	"smw_result_next": "Slijedeće",
 	"smw_result_noresults": "Nema rezultata.",
 	"smw_smwadmin_return": "Natrag na $1",
-	"smw_smwadmin_datarefreshstopconfirm": "Da, {{GENDER:$1|siguran|sigurna}} sam.",
-	"smw-livepreview-loading": "Punjenje…"
+	"smw_smwadmin_datarefreshstopconfirm": "Da, siguran sam."
 }

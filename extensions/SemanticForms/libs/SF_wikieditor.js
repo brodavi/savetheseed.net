@@ -1,6 +1,5 @@
 // create ext if it does not exist yet
-/*global wgWikiEditorEnabledModules*/
-if ( window.ext == null || typeof( window.ext ) === "undefined" ) {
+if ( typeof( window.ext ) === "undefined" ) {
 	window.ext = {};
 }
 
@@ -17,7 +16,7 @@ window.ext.wikieditor = {
 						input.wikiEditor( 'addModule', jQuery.wikiEditor.modules.toolbar.config.getDefaultConfig() );
 
 						// hide sig if required
-						if ( wgWikiEditorEnabledModules && wgWikiEditorEnabledModules.hidesig === true ) {
+						if ( wgWikiEditorEnabledModules && wgWikiEditorEnabledModules['hidesig'] == true ) {
 							input.wikiEditor( 'removeFromToolbar', {
 								'section': 'main',
 								'group': 'insert',

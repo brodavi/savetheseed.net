@@ -25,10 +25,6 @@ class SFTemplates extends SpecialPage {
 		$rep = new TemplatesPage();
 		$rep->execute( $query );
 	}
-
-	protected function getGroupName() {
-		return 'pages';
-	}
 }
 
 /**
@@ -49,7 +45,7 @@ class TemplatesPage extends QueryPage {
 	function isSyndicated() { return false; }
 
 	function getPageHeader() {
-		$header = Html::element( 'p', null, wfMessage( 'sf_templates_docu' )->text() );
+		$header = '<p>' . wfMessage( 'sf_templates_docu' )->text() . "</p><br />\n";
 		return $header;
 	}
 

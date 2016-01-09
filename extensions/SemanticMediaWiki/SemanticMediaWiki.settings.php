@@ -69,66 +69,6 @@ $GLOBALS['smwgSparqlDataEndpoint'] = 'http://localhost:8080/data/';
 $GLOBALS['smwgSparqlDefaultGraph'] = '';
 ##
 
-##
-# SparqlDBConnectionProvider
-#
-# Identifies a database connector that ought to be used together with the
-# SPARQLStore
-#
-# List of standard connectors ($smwgSparqlDatabase will have no effect)
-# - 'fuseki'
-# - 'virtuoso'
-# - '4store'
-# - 'sesame'
-# - 'generic'
-#
-# With 2.0 it is suggested to assign the necessary connector to
-# $smwgSparqlDatabaseConnector in order to avoid arbitrary class assignments in
-# $smwgSparqlDatabase (which can change in future releases without further notice).
-#
-# In case $smwgSparqlDatabaseConnector = 'custom' is maintained, $smwgSparqlDatabase
-# is expected to contain a custom class connector where $smwgSparqlDatabase is only
-# to be sued for when a custom database connector is necessary.
-#
-# $smwgSparqlDatabaseConnector = 'custom' is set as legacy configuration to allow for
-# existing (prior 2.0) customizing to work without changes.
-#
-# @since 2.0
-##
-$GLOBALS['smwgSparqlDatabaseConnector'] = 'custom';
-
-##
-# Sparql query features that are expected to be supported by the repository:
-#
-# - SMW_SPARQL_QF_NONE does not support any features (as required by SPARQL 1.1)
-# - SMW_SPARQL_QF_REDI to support finding redirects using inverse property paths,
-#   can only be used for repositories with full SPARQL 1.1 support (e.g. Fuseki,
-#   Sesame)
-# - SMW_SPARQL_QF_SUBP to resolve subproperties
-# - SMW_SPARQL_QF_SUBC to resolve subcategories
-#
-# Please check with your repository provider whether SPARQL 1.1 is fully
-# supported or not, and if not SMW_SPARQL_QF_NONE should be set.
-#
-# @since 2.3
-##
-$GLOBALS['smwgSparqlQFeatures'] = SMW_SPARQL_QF_REDI | SMW_SPARQL_QF_SUBP | SMW_SPARQL_QF_SUBC;
-
-##
-# @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1306
-#
-# Setting to explicitly force a CURLOPT_HTTP_VERSION for the endpoint communication
-# and should not be changed unless an error as in #1306 was encountered.
-#
-# @see http://curl.haxx.se/libcurl/c/CURLOPT_HTTP_VERSION.html reads "... libcurl
-# to use the specific HTTP versions. This is not sensible to do unless you have
-# a good reason.""
-#
-# @since 2.3
-# @default false === means to use the default as determined by cURL
-##
-$GLOBALS['smwgSparqlRepositoryConnectorForcedHttpVersion'] = false;
-
 ###
 # Setting this option to true before including this file to enable the old
 # Type: namespace that SMW used up to version 1.5.*. This should only be
@@ -272,11 +212,8 @@ $GLOBALS['smwgBrowseShowAll'] = true;
 # Should the search by property special page display nearby results when there
 # are only a few results with the exact value? Switch this off if this page has
 # performance problems.
-#
-# @since 2.1 enabled default types, to disable the functionality either set the
-# variable to array() or false
 ##
-$GLOBALS['smwgSearchByPropertyFuzzy'] = array( '_num', '_txt', '_dat' );
+$GLOBALS['smwgSearchByPropertyFuzzy'] = true;
 ##
 
 ###
@@ -304,37 +241,37 @@ $GLOBALS['smwgMaxPropertyValues'] = 3; // if large values are desired, consider 
 $GLOBALS['smwgQEnabled'] = true;   // (De)activates all query related features and interfaces
 $GLOBALS['smwgQMaxLimit'] = 10000; // Max number of results *ever* retrieved, even when using special query pages.
 $GLOBALS['smwgIgnoreQueryErrors'] = true; // Should queries be executed even if some errors were detected?
-										// A hint that points out errors is shown in any case.
+                               // A hint that points out errors is shown in any case.
 
 $GLOBALS['smwgQSubcategoryDepth'] = 10;  // Restrict level of sub-category inclusion (steps within category hierarchy)
 $GLOBALS['smwgQSubpropertyDepth'] = 10;  // Restrict level of sub-property inclusion (steps within property hierarchy)
-										// (Use 0 to disable hierarchy-inferencing in queries)
+                              // (Use 0 to disable hierarchy-inferencing in queries)
 $GLOBALS['smwgQEqualitySupport'] = SMW_EQ_SOME; // Evaluate #redirects as equality between page names, with possible
-												// performance-relevant restrictions depending on the storage engine
-// $GLOBALS['smwgQEqualitySupport'] = SMW_EQ_FULL; // Evaluate #redirects as equality between page names in all cases
-// $GLOBALS['smwgQEqualitySupport'] = SMW_EQ_NONE; // Never evaluate #redirects as equality between page names
+                                     // performance-relevant restrictions depending on the storage engine
+  // $GLOBALS['smwgQEqualitySupport'] = SMW_EQ_FULL; // Evaluate #redirects as equality between page names in all cases
+  // $GLOBALS['smwgQEqualitySupport'] = SMW_EQ_NONE; // Never evaluate #redirects as equality between page names
 $GLOBALS['smwgQSortingSupport']     = true; // (De)activate sorting of results.
 $GLOBALS['smwgQRandSortingSupport'] = true; // (De)activate random sorting of results.
 $GLOBALS['smwgQDefaultNamespaces'] = null; // Which namespaces should be searched by default?
-										// (value NULL switches off default restrictions on searching -- this is faster)
-										// Example with namespaces: $GLOBALS['smwgQDefaultNamespaces'] = array(NS_MAIN, NS_IMAGE);
+                                // (value NULL switches off default restrictions on searching -- this is faster)
+                                // Example with namespaces: $GLOBALS['smwgQDefaultNamespaces'] = array(NS_MAIN, NS_IMAGE);
 
 /**
-* List of comparator characters supported by queries, separated by '|', for use in a regex.
-*
-* Available entries:
-* 	< (smaller than) if $smwStrictComparators is false, it's actually smaller than or equal to
-* 	> (greater than) if $smwStrictComparators is false, it's actually bigger than or equal to
-* 	! (unequal to)
-* 	~ (pattern with '*' as wildcard, only for Type:String)
-* 	!~ (not a pattern with '*' as wildcard, only for Type:String, need to be placed before ! and ~ to work correctly)
-* 	≤ (smaller than or equal to)
-* 	≥ (greater than or equal to)
-*
-* If unsupported comparators are used, they are treated as part of the queried value
-*
-* @var string
-*/
+ * List of comparator characters supported by queries, separated by '|', for use in a regex.
+ *
+ * Available entries:
+ * 	< (smaller than) if $smwStrictComparators is false, it's actually smaller than or equal to
+ * 	> (greater than) if $smwStrictComparators is false, it's actually bigger than or equal to
+ * 	! (unequal to)
+ * 	~ (pattern with '*' as wildcard, only for Type:String)
+ * 	!~ (not a pattern with '*' as wildcard, only for Type:String, need to be placed before ! and ~ to work correctly)
+ * 	≤ (smaller than or equal to)
+ * 	≥ (greater than or equal to)
+ *
+ * If unsupported comparators are used, they are treated as part of the queried value
+ *
+ * @var string
+ */
 $GLOBALS['smwgQComparators'] = '<|>|!~|!|~|≤|≥|<<|>>';
 
 ###
@@ -350,7 +287,7 @@ $GLOBALS['smwStrictComparators'] = false;
 # queries that should immediately be answered by the wiki, using whatever
 # computations are needed.
 ##
-$GLOBALS['smwgQMaxSize'] = 16; // Maximal number of conditions in queries, use format=debug for example sizes
+$GLOBALS['smwgQMaxSize'] = 12; // Maximal number of conditions in queries, use format=debug for example sizes
 $GLOBALS['smwgQMaxDepth'] = 4; // Maximal property depth of queries, e.g. [[rel::<q>[[rel2::Test]]</q>]] has depth 2
 
 // The below setting defines which query features should be available by default.
@@ -360,12 +297,11 @@ $GLOBALS['smwgQMaxDepth'] = 4; // Maximal property depth of queries, e.g. [[rel:
 // anything but disjunctions:  $GLOBALS['smwgQFeatures'] = SMW_ANY_QUERY & ~SMW_DISJUNCTION_QUERY;
 // The default is to support all basic features.
 $GLOBALS['smwgQFeatures'] = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_CONCEPT_QUERY |
-					SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY;
+                 SMW_NAMESPACE_QUERY | SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY;
 
 ### Settings about printout of (especially inline) queries:
 $GLOBALS['smwgQDefaultLimit'] = 50;      // Default number of rows returned in a query. Can be increased with limit=num in #ask
 $GLOBALS['smwgQMaxInlineLimit'] = 500;   // Max number of rows ever printed in a single inline query on a single page.
-$GLOBALS['smwgQUpperbound'] = 5000;      // Max number of rows ever printed in a single inline query on a single page.
 $GLOBALS['smwgQPrintoutLimit']  = 100;   // Max number of supported printouts (added columns in result table, ?-statements)
 $GLOBALS['smwgQDefaultLinking'] = 'all'; // Default linking behavior. Can be one of "none", "subject" (first column), "all".
 
@@ -383,16 +319,16 @@ $GLOBALS['smwgQDefaultLinking'] = 'all'; // Default linking behavior. Can be one
 # their queries.
 ##
 $GLOBALS['smwgQConceptCaching'] = CONCEPT_CACHE_HARD; // Which concepts should be displayed only if available from cache?
-		// CONCEPT_CACHE_ALL   -- show concept elements anywhere only if they are cached
-		// CONCEPT_CACHE_HARD  -- show without cache if concept is not harder than permitted inline queries
-		// CONCEPT_CACHE_NONE  -- show all concepts even without any cache
-		// In any cases, caches will always be used if available.
+       // CONCEPT_CACHE_ALL   -- show concept elements anywhere only if they are cached
+       // CONCEPT_CACHE_HARD  -- show without cache if concept is not harder than permitted inline queries
+       // CONCEPT_CACHE_NONE  -- show all concepts even without any cache
+       // In any cases, caches will always be used if available.
 $GLOBALS['smwgQConceptMaxSize'] = 20; // Same as $smwgQMaxSize, but for concepts
 $GLOBALS['smwgQConceptMaxDepth'] = 8; // Same as $smwgQMaxDepth, but for concepts
 
-// Same as $smwgQFeatures but for concepts
+// Same as $smwgQFeatures but for concepts (note: using concepts in concepts is currently not supported!)
 $GLOBALS['smwgQConceptFeatures'] = SMW_PROPERTY_QUERY | SMW_CATEGORY_QUERY | SMW_NAMESPACE_QUERY |
-								SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY | SMW_CONCEPT_QUERY;
+                        SMW_CONJUNCTION_QUERY | SMW_DISJUNCTION_QUERY;
 
 // Cache life time in minutes. If a concept cache exists but is older than
 // this, SMW tries to recompute it, and will only use the cache if this is not
@@ -414,16 +350,16 @@ $GLOBALS['smwgResultFormats'] = array(
 	'ol'         => 'SMW\ListResultPrinter',
 	'ul'         => 'SMW\ListResultPrinter',
 	'broadtable' => 'SMW\TableResultPrinter',
-	'category'   => 'SMW\CategoryResultPrinter',
-	'embedded'   => 'SMW\EmbeddedResultPrinter',
+	'category'   => 'SMWCategoryResultPrinter',
+	'embedded'   => 'SMWEmbeddedResultPrinter',
 	'template'   => 'SMW\ListResultPrinter',
 	'count'      => 'SMW\ListResultPrinter',
 	'debug'      => 'SMW\ListResultPrinter',
 	'feed'       => 'SMW\FeedResultPrinter',
 	'csv'        => 'SMW\CsvResultPrinter',
-	'dsv'        => 'SMW\DsvResultPrinter',
+	'dsv'        => 'SMWDSVResultPrinter',
 	'json'       => 'SMW\JsonResultPrinter',
-	'rdf'        => 'SMW\RdfResultPrinter'
+	'rdf'        => 'SMWRDFResultPrinter'
 );
 ##
 
@@ -570,54 +506,8 @@ $GLOBALS['smwgAutoRefreshSubject'] = true;
 #
 # @since 1.9
 ##
-$GLOBALS['smwgCacheType'] = CACHE_ANYTHING;  // To be removed with 3.0 use $smwgMainCacheType
-$GLOBALS['smwgMainCacheType'] = CACHE_ANYTHING; // Isn't used yet
+$GLOBALS['smwgCacheType'] = CACHE_ANYTHING;
 ##
-
-###
-# Separate cache type to allow for adding a more responsive cache layer
-# (redis, riak) when requesting value lookups from the SQLStore.
-#
-# CACHE_NONE = disabled, uses the standard SQLStore DB access for all
-# lookups
-#
-# @since 2.3 (experimental)
-#
-# @default: CACHE_NONE, users need to actively enable it in order
-# to make use of it
-##
-$GLOBALS['smwgValueLookupCacheType'] = CACHE_NONE;
-##
-
-###
-# Declares a lifetime of a cached item for `smwgValueLookupCacheType` until it
-# is removed if not invalidated before.
-#
-# @since 2.3
-##
-$GLOBALS['smwgValueLookupCacheLifetime'] = 60 * 60 * 24 * 7; // a week
-##
-
-##
-# Features expected to be enabled in CachedValueLookupStore
-#
-# Flags that declare a enable/disable state of a supported functionality. If a
-# feature is disabled then a connection is always established to the standard
-# Repository/DB backend.
-#
-# The settings are only relevant for cases where `smwgValueLookupCacheType` is
-# set.
-#
-# - SMW_VL_SD: corresponds to Store::getSemanticData
-# - SMW_VL_PL: corresponds to Store::getProperties
-# - SMW_VL_PV: corresponds to Store::getPropertyValues
-# - SMW_VL_PS: corresponds to Store::getPropertySubjects
-#
-# @since 2.3
-#
-# @default: all features are enabled
-##
-$GLOBALS['smwgValueLookupFeatures'] = SMW_VL_SD | SMW_VL_PL | SMW_VL_PV | SMW_VL_PS;
 
 ###
 # An array containing cache related settings used within Semantic MediaWiki
@@ -831,113 +721,3 @@ $GLOBALS['smwgOnDeleteAction'] = array(
 	'smwgDeleteSubjectWithAssociatesRefresh' => false
 );
 ##
-
-###
-# Search engine to fall back to in case SMWSearch is used as custom search
-# engine but is unable to interpret the search term as an SMW query
-#
-# Leave as null to select the default search engine for the selected database
-# type (e.g. SearchMySQL, SearchPostgres or SearchOracle), or set to a class
-# name to override to a custom search engine.
-#
-# @since 2.1
-##
-$GLOBALS['smwgFallbackSearchType'] = null;
-##
-
-###
-# If enabled it will display help information on the edit page to support users
-# unfamiliar with SMW when extending page content.
-#
-# @since 2.1
-##
-$GLOBALS['smwgEnabledEditPageHelp'] = true;
-##
-
-###
-#
-# Improves performance for selected Job operations that can be executed in a deferred
-# processing mode (or asynchronous to the current transaction) as those (if enabled)
-# are send as request to a dispatcher in order for them to be decoupled from the
-# initial transaction.
-#
-# @since 2.3
-##
-$GLOBALS['smwgEnabledHttpDeferredJobRequest'] = true;
-##
-
-###
-# If enabled it will store dependencies for queries allowing it to purge
-# the ParserCache on subjects with embedded queries that contain altered entities.
-#
-# The setting requires to run `update.php` (it creates an extra table). Also
-# as noted in #1117, `SMW\ParserCachePurgeJob` should be scheduled accordingly.
-#
-# Requires `smwgEnabledHttpDeferredJobRequest` to be set true.
-#
-# @since 2.3 (experimental)
-# @default false
-##
-$GLOBALS['smwgEnabledQueryDependencyLinksStore'] = false;
-##
-
-###
-# Relates to `smwgEnabledQueryDependencyLinksStore` and defines property keys
-# to be excluded from the dependency detection.
-#
-# For example, to avoid a purge process being triggered for each altered subobject
-# '_SOBJ' is excluded from the processing but it will not exclude any properties
-# defined by a subobject (given that it is not part of an extended exclusion list).
-#
-# `_MDAT` is excluded to avoid a purge on each page edit with a `Modification date`
-# change that would otherwise trigger a dependency update.
-#
-# @since 2.3 (experimental)
-##
-$GLOBALS['smwgPropertyDependencyDetectionBlacklist'] = array( '_MDAT', '_SOBJ' );
-##
-
-###
-# The setting is introduced the keep backwards compatibility with existing Rdf/Turtle
-# exports. The `aux` marker is epxected only used to be used for selected properties
-# to generate a helper value and not for any other predefined property.
-#
-# Any property that does not explicitly require an auxiliary value (such `_dat`/
-# `_geo` type values) now uses its native as condition descriptor (`Has_subobject`
-# instead of `Has_subobject-23aux`)
-#
-# For SPARQL repository users that don't want to run an a  `rebuildData.php`,
-# the setting has to be TRUE.
-#
-# This BC setting is planned to vanish with 3.x.
-#
-# @since 2.3
-##
-$GLOBALS['smwgExportBCAuxiliaryUse'] = false;
-##
-
-##
-# The preferred form is to use canonical identifiers (Category:, Property:)
-# instead of localized names to ensure that RDF/Query statements are language
-# agnostic and do work even after the site/content language changes.
-#
-# This BC setting is planned to vanish with 3.x.
-#
-# @since 2.3
-##
-$GLOBALS['smwgExportBCNonCanonicalFormUse'] = false;
-
-##
-# The strict mode is to help to remove ambiguity during the annotation [[ ... :: ... ]]
-# parsing process.
-#
-# The default interpretation (strict) is to find a single triple such as
-# [[property::value:partOfTheValue::alsoPartOfTheValue]] where in case the strict
-# mode is disabled multiple properties can be assigned using a
-# [[property1::property2::value]] notation which may cause value strings to be
-# interpret unanticipated in case of additional colons.
-#
-# @since 2.3
-# @default true
-##
-$GLOBALS['smwgEnabledInTextAnnotationParserStrictMode'] = true;

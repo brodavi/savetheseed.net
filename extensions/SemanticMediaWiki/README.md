@@ -1,6 +1,6 @@
 # Semantic MediaWiki
 
-[![Build Status](https://secure.travis-ci.org/SemanticMediaWiki/SemanticMediaWiki.svg?branch=master)](http://travis-ci.org/SemanticMediaWiki/SemanticMediaWiki)
+[![Build Status](https://secure.travis-ci.org/SemanticMediaWiki/SemanticMediaWiki.png?branch=master)](http://travis-ci.org/SemanticMediaWiki/SemanticMediaWiki)
 [![Code Coverage](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticMediaWiki/badges/coverage.png?s=f3501ede0bcc98824aa51501eb3647ecf71218c0)](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticMediaWiki/)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticMediaWiki/badges/quality-score.png?s=d9aac7e68e6554f95b0a89608cbc36985429d819)](https://scrutinizer-ci.com/g/SemanticMediaWiki/SemanticMediaWiki/)
 [![Latest Stable Version](https://poser.pugx.org/mediawiki/semantic-media-wiki/version.png)](https://packagist.org/packages/mediawiki/semantic-media-wiki)
@@ -17,17 +17,13 @@ knowledge management system. All data created within SMW can easily be
 published via the [Semantic Web](https://semantic-mediawiki.org/wiki/Semantic_Web),
 allowing other systems to use this data seamlessly.
 
-For a better understanding of how SMW works, have a look at [Semantic MediaWiki deployed in 5 min](https://vimeo.com/82255034), using a [Sesame](https://vimeo.com/126392433) or [Fuseki ](https://vimeo.com/118614078) triplestore, or 
-browse the [smw.org@wiki](https://semantic-mediawiki.org) for a more comprehensive introduction.
+For details and further links, see [the SMW wiki](https://semantic-mediawiki.org).
 
 ## Requirements
 
 - PHP 5.3.2 or later
 - MediaWiki 1.19 or later
-- MySQL 5+, SQLite 3+ or PostgreSQL 9.x
-
-A list of supported PHP versions, MediaWiki versions and databases per SMW release can be found
-in the [compatibility matrix](docs/COMPATIBILITY.md).
+- When using MySQL 5 or later or when using SQLite 3 or later (a list of supported platforms and versions can be found [here](/docs/INSTALL.md##platform-compatibility))
 
 ## Installation
 
@@ -38,7 +34,7 @@ the available [upgrade guide][smw-installation].
 ```json
 {
 	"require": {
-		"mediawiki/semantic-media-wiki": "~2.3@dev"
+		"mediawiki/semantic-media-wiki": "~1.9"
 	}
 }
 ```
@@ -61,16 +57,12 @@ The most important files are linked below.
 [![Facebook](https://semantic-mediawiki.org/w/images/thumb/7/77/677166248.png/30px-677166248.png)](https://www.facebook.com/pages/Semantic-MediaWiki/160459700707245)
 [![Google+](https://semantic-mediawiki.org/w/images/a/ae/30px-Google%2B.png)](https://plus.google.com/115301028320198614441/posts)
 
-Many people have contributed to SMW. A list of people who have made contributions in the past can
-be found [here][contributors] or [on the SMW wiki](https://semantic-mediawiki.org/wiki/Help:SMW_Project#Contributors).
-The overview on [how to contribute](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/CONTRIBUTING.md)
-provides information on the different ways available to do so.
+Many people have contributed to SMW.  A list of people who have made contributions in the past can be found [here][contributors] or [on the SMW wiki]
+(https://semantic-mediawiki.org/wiki/Help:SMW_Project#Contributors).
 
-If you have remarks, questions, or suggestions, please send them to semediawiki-users@lists.sourceforge.net.
-You can subscribe to this list [here](http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user).
+If you have remarks, questions, or suggestions, please send them to semediawiki-users@lists.sourceforge.net. You can subscribe to this list [here](http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user).
 
-If you want to contribute work to the project please subscribe to the developers mailing list and
-have a look at the contribution guideline.
+If you want to contribute work to the project please subscribe to the developers mailing list and have a look at the contribution guildline.
 
 * [File an issue](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues)
 * [Submit a pull request](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pulls)
@@ -80,8 +72,7 @@ have a look at the contribution guideline.
 
 ### Tests
 
-This extension provides unit and integration tests that are normally run by a [continues integration platform][travis]
-but can also be executed manually. A more comprehensive introduction can be found in the [test section](/tests/README.md#running-tests).
+The library provides unit tests that covers the core-functionality normally run by a [continues integration platform][travis]. Tests can also be executed manually using the [PHPUnit][mw-testing] configuration file found in the root directory.
 
 ## License
 

@@ -1,11 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Roustammr",
-			"Рустам Нурыев"
+			"Roustammr"
 		]
 	},
-	"browse": "Вики күҙәтеү",
-	"smw_browselink": "Үҙенсәлектәрҙе ҡарарға",
-	"smw-livepreview-loading": "Сығарыу..."
+	"smw_browselink": "Үҙенсәлектәрҙе ҡарарға"
 }

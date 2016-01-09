@@ -4,9 +4,7 @@
 			"Dalibor Bosits",
 			"Sociologist",
 			"Tivek",
-			"아라",
-			"SpeedyGonsales",
-			"Bugoslav"
+			"아라"
 		]
 	},
 	"smw-desc": "Čini Vaš wiki dostupnijim - za strojeve ''i'' ljude ([https://semantic-mediawiki.org/wiki/Help:User_manual dokumentacija])",
@@ -52,7 +50,7 @@
 	"smw_iq_moreresults": "… daljnji rezultati",
 	"smw_parseerror": "Dana vrijednost nije razumljiva.",
 	"smw_notitle": "\"$1\" ne može biti ime stranice na ovom wikiju.",
-	"smw_wrong_namespace": "U ovom su slučaju dopuštene samo stranice iz imenskoga prostora \"$1\".",
+	"smw_wrong_namespace": "Ovdje su dozvoljene samo stranice iz imenskog prostora \"$1\".",
 	"smw_manytypes": "Za svojstvo je definirano više od jednog tipa.",
 	"smw_emptystring": "Prazni nizovi se ne prihvaćaju.",
 	"smw_notinenum": "\"$1\" nije na popisu dozvoljenih vrijednosti ($2) za ovo svojstvo.",
@@ -108,7 +106,7 @@
 	"semanticstatistics": "Statistika o semantici",
 	"smw_semstats_text": "Ovaj wiki sadrži '''$1''' {{PLURAL:$1|vrijednost svojstva|vrijednosti svojstava|vrijednosti svojstava}} za ukupno '''$2''' [[Special:Properties|{{PLURAL:$2|svojstvo|različita svojstva|različitih svojstava}}]].\n'''$3''' {{PLURAL:$3|svojstvo ima|svojstva imaju|svojstava imaju}} vlastitu stranicu i '''$4''' {{PLURAL:$3|ima|od njih imaju|od njih imaju}} zadan tip podatka.\nNeka od postojećih svojstava su možda [[Special:UnusedProperties|nekorištena svojstva]].\nSvojstva koja još uvijek nemaju stranicu nalaze se na [[Special:WantedProperties|popisu traženih svojstava]].",
 	"smw_uri_doc": "URI razrješitelj implementira [$1 W3C traženje TAGova na httpRange-14]\nkoje brine da se ljudi ne pretvore u web stranice.",
-	"ask": "Semantička tražilica",
+	"ask": "Smenatička pretraga",
 	"smw_ask_sortby": "Razvrstavanje po stupcu (opcionalno)",
 	"smw_ask_ascorder": "Rastuće",
 	"smw_ask_descorder": "padajuće",
@@ -163,9 +161,11 @@
 	"smw_smwadmin_docu": "Ova posebna stranica pomaže prilikom instalacije i nadogradnje <a href=\"http://semantic-mediawiki.org\">Semantic MediaWiki</a>.\nNe zaboravite napraviti sigurnosnu kopiju važnih podataka prije izvršavanja administrativnih funkcija.",
 	"smw_smwadmin_db": "Instalacija i nadgradnja baze podataka",
 	"smw_smwadmin_dbdocu": "Semantic MediaWiki zahtijeva određena proširenja MediaWiki baze podataka za čuvanje semantičkih podataka.\nFunkcija ispod osigurava da je vaša baza pravilno postavljena.\nOvaj korak ne utječe na ostatak MediaWiki baze podataka i lako se može poništiti ukoliko to želite.\nOva se funkcija može izvršiti više puta bez ikakvih štetnih posljedica, no potrebna je samo kod instalacije ili nadgradnje.",
-	"smw_smwadmin_permissionswarn": "Ako operacija ne uspije i vrati SQL grešku, baza podataka koju koristi Vaš wiki (provjerite svoj LocalSettings.php) vjerojatno nema dovoljna prava.\nUčinite jedno od sljedećeg: dodijelite ovom korisniku dodatna prava za stvaranje i brisanje tablica, privremeno unesite administratorsko korisničko ime i lozinku Vaše baze podataka u LocalSettings.php, ili pokrenite skriptu za održavanje <code>setupStore.php</code> koja će koristiti prava iz AdminSettings.php.",
+	"smw_smwadmin_permissionswarn": "Ako operacija ne uspije i vrati SQL grešku, baza podataka koju koristi Vaš wiki (provjerite svoj LocalSettings.php) vjerojatno nema dovoljna prava.\nUčinite jedno od sljedećeg: dodijelite ovom korisniku dodatna prava za stvaranje i brisanje tablica, privremeno unesite administratorsko korisničko ime i lozinku Vaše baze podataka u LocalSettings.php, ili pokrenite skriptu za održavanje <code>SMW_setup.php</code> koja će koristiti prava iz AdminSettings.php.",
 	"smw_smwadmin_dbbutton": "Inicijaliziraj ili nadogradi tablice",
 	"smw_smwadmin_announce": "Najavite svoj wiki",
+	"smw_smwadmin_announcedocu": "Semantic MediaWiki pruža web uslugu koja prikazuje i najavljuje nove semantičke wikije.\nTime se vodi popis javnih web stranica i projekata koji koriste Semantic MediaWiki, uglavnom kako bi <a href=\"http://semantic-mediawiki.org/wiki/SMW_Project\">Projekt Semantic MediaWiki</a> dobio pregled tipičnih upotreba Semantic MediaWiki.\nVidi početnu stranicu Semantic MediaWiki za <a href=\"http://semantic-mediawiki.org/wiki/Registry\">više informacija o ovoj usluzi</a>.",
+	"smw_smwadmin_announcebutton": "Pritisnite sljedeći gumb kako biste poslali URL svog wikija na tu uslugu.\nUsluga neće registrirati wikije koji nisu javno dostupni i skupljat će samo javno dostupne podatke.",
 	"smw_smwadmin_datarefresh": "Popravljanje i nadgradnja podataka",
 	"smw_smwadmin_datarefreshdocu": "Moguće je povratiti sve semantičke podatke Semantic MediaWiki na osnovi trenutnog tekstualnog wikija, što možete koristiti za popravak pokvarenih podataka ili osvježivanje podataka u slučaju internih promjena softvera.\nOsvježavanje se izvršava stranicu po stranicu i neće biti gotovo odmah.\nPrikaz dolje sadrži popis svih osvježavanja u tijeku i omogućuje Vam da zaustavite ili pokrenete osvježavanje (osim ako to nije onemogućio administrator).",
 	"smw_smwadmin_datarefreshprogress": "<strong>Osvježavanje je već u tijeku.</strong>\nNormalno je da osvježavanje napreduje sporo jer se podaci osvježavaju u malim obrocima svaki put kad korisnik pristupi wikiju.\nDa bi ovo osvježavanje završilo čim prije, možete pokrenuti MediaWiki skriptu za održavanje <code>runJobs.php</code> (koristite opciju <code>--maxjobs 1000</code> kako biste ograničili broj zasebnih osvježavanja po jednoj seriji).\nProcjena napretka osvježavanja:",
@@ -183,6 +183,5 @@
 	"smw_adminlinks_inlinequerieshelp": "Pomoć za umetnute upite",
 	"smw_unknowntype": "Za svojstvo je definiran nepodržan tip \"$1\".",
 	"smw_concept_header": "Stranice koncepta \"$1\"",
-	"smw_conceptarticlecount": "Prikazano $1 {{PLURAL:$1|stranica koja pripada|stranice koje pripadaju|stranica koje pripadaju}} tom konceptu.",
-	"smw-livepreview-loading": "Učitavam…"
+	"smw_conceptarticlecount": "Prikazano $1 {{PLURAL:$1|stranica koja pripada|stranice koje pripadaju|stranica koje pripadaju}} tom konceptu."
 }

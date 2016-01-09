@@ -7,8 +7,7 @@
 			"Mormegil",
 			"Vks",
 			"XenoPheX",
-			"아라",
-			"Matěj Suchánek"
+			"아라"
 		]
 	},
 	"smw-desc": "Činíme vaší wiki přístupnější – pro stroje ''i'' lidi ([https://semantic-mediawiki.org/wiki/Help:User_manual online documentation])",
@@ -165,7 +164,7 @@
 	"smw-ask-format-selection-help": "Detailní popis najdete na stránce nápovědy $1.",
 	"searchbyproperty": "Hledat podle hodnoty vlastnosti",
 	"smw_sbv_docu": "Hledat na wiki článek, který má vlastnost s jistou hodnotou.",
-	"smw_sbv_novalue": "Nebyla uvedena hodnota. Prosím, vložte ji ve formuláři nebo zobrazte všechny atributy typu $1",
+	"smw_sbv_novalue": "Nebyla uvedena hodnota. Prosím, vložte jí ve formuláři nebo zobrazte všechny atributy typu $1",
 	"smw_sbv_displayresult": "Seznam všech článků, které mají vlastnost $1 s hodnotou $2.",
 	"smw_sbv_displayresultfuzzy": "Seznam všech stránek, jejichž vlastnost „$1“ má hodnotu „$2“. Jelikož bylo výsledků málo, jsou zobrazeny i blízké hodnoty.",
 	"smw_sbv_property": "Vlastnost:",
@@ -195,9 +194,11 @@
 	"smw_smwadmin_docu": "Tato speciální stránka vám pomůže s instalací a upgradem <a href=\"https://semantic-mediawiki.org\">Semantic MediaWiki</a>.\nPřed spuštěním administrativních funkcí nezapomeňte zálohovat cenná data.",
 	"smw_smwadmin_db": "Instalace a upgrade databáze",
 	"smw_smwadmin_dbdocu": "Aby mohla Semantic MediaWiki ukládat sémantická data, potřebuje rozšířit databázi MediaWiki.\nFunkce níže zajišťuje, že je vaše databáze správně nastavena.\nZměny provedené v tomto kroku nemají žádný vliv na zbytek databáze MediaWiki, a lze je snadno vzít zpět.\nTuto přípravnou funkci můžete spustit vícekrát, aniž by došlo k jakémukoli poškození, ale je to nutné pouze jednou při instalaci nebo upgradu.",
-	"smw_smwadmin_permissionswarn": "Selže-li operace s SQL chybami, pak uživatel databáze, kterého vaše wiki používá (zkontrolujte LocalSettings.php) pravděpodobně nemá dostatečná oprávnění.\nPřidělte tomuto uživateli dostatečná oprávnění k tvorbě a mazání tabulek, dočasně do LocalSettings.php zadejte údaje rootu databáze, nebo použijte údržbový skript <code>setupStore.php</code>, který používá údaje z AdminSettings.php.",
+	"smw_smwadmin_permissionswarn": "Selže-li operace s SQL chybami, pak uživatel databáze, kterého vaše wiki používá (zkontrolujte LocalSettings.php) pravděpodobně nemá dostatečná oprávnění.\nPřidělte tomuto uživateli dostatečná oprávnění k tvorbě a mazání tabulek, dočasně do LocalSettings.php zadejte údaje rootu databáze, nebo použijte údržbový skript <code>SMW_setup.php</code>, který používá údaje z AdminSettings.php.",
 	"smw_smwadmin_dbbutton": "Inicializovat či upgradovat tabulky",
 	"smw_smwadmin_announce": "Nahlásit tuto wiki",
+	"smw_smwadmin_announcedocu": "Nové sémantické wiki lze ohlásit příslušné webové službě Semantic MediaWiki.\nTato hlášení slouží k údržbě seznamu veřejných stránek, které Semantic MediaWiki používají. <a href=\"https://semantic-mediawiki.org/wiki/SMW_Project\">Projekt Semantic MediaWiki</a> si tak udržuje přehled o typických využitích Semantic MediaWiki.\nNa domovské stránce Semantic MediaWiki můžete najít <a href=\"https://semantic-mediawiki.org/wiki/Registry\">více informací o této službě</a>.",
+	"smw_smwadmin_announcebutton": "Stisknutím následujícího tlačítka této službě odešlete URL vaší wiki.\nSlužba neregistruje wiki, které nejsou veřejně přístupné, a ukládá pouze veřejně přístupné informace.",
 	"smw_smwadmin_datarefresh": "Oprava a upgrade dat",
 	"smw_smwadmin_datarefreshdocu": "Na základě obsahu stránek wiki je možné obnovit všechna data Semantic MediaWiki.\nTo může být užitečné při opravě poškozených dat nebo při jejich úpravě, pokud se v důsledku upgradu softwaru změní vnitřní formát.\nUpdate se spouští stránku po stránce a nebude dokončen ihned.\nNásledující se zobrazuje pokud update právě probíhá a umožňuje vám updaty spouštět či zastavovat (pokud tuto možnost nezakázal administrátor).",
 	"smw_smwadmin_datarefreshprogress": "<strong>Probíhá update.</strong>\nJe normální, že update postupuje pomalu, protože data zpracovává v malých dávkách vždy, když wiki navštíví nějaký uživatel.\nChcete-li update dokončit rychleji, můžete spustit údržbový skript MediaWiki <code>runJobs.php</code> (k omezení počtu updatů provedených v jedné dávce použijte nastavení <code>--maxjobs 1000</code>).\nOdhadovaný průběh updatu:",
@@ -210,7 +211,6 @@
 	"smw_smwadmin_smwhomepage": "Kompletní uživatelská dokumentace Semantic MediaWiki je dostupná na <b><a href=\"https://semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw_smwadmin_mediazilla": "Chyby lze hlásit na <a href=\"https://bugzilla.wikimedia.org/\">Bugzille</a>.",
 	"smw_smwadmin_questions": "Další otázky či návrhy můžete pokládat v diskuzi v <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">uživatelském fóru Semantic MediaWiki</a>.",
-	"smw_adminlinks_inlinequerieshelp": "Nápověda k inline dotazům",
 	"smw-createproperty-isproperty": "Toto je vlastnost typu $1.",
 	"smw-createproperty-allowedvals": "{{PLURAL:$1|Povolená hodnota této vlastnosti je|Povolené hodnoty této vlastnosti jsou}}:",
 	"smw-paramdesc-category-delim": "Oddělovač",
@@ -230,8 +230,5 @@
 	"group-smwadministrator": "Správci Semantic MediaWiki",
 	"group-smwadministrator-member": "{{GENDER:$1|správce|správkyně|správce}} (SMW)",
 	"smw-sp-properties-cache-info": "Uvedená data pocházejí z [https://www.semantic-mediawiki.org/wiki/Caching cache] a byla naposledy aktualizována $1.",
-	"smw-sp-properties-header-label": "Seznam vlastností",
-	"smw-livepreview-loading": "Nahrávám…",
-	"smw-editpage-annotation-enabled": "Tato stránka podporuje sémantické anotace uvnitř textu (např. <nowiki>„[[Is specified as::World Heritage Site]]“</nowiki>), které slouží k budování strukturovaného a prohledávatelného obsahu prostřednictvím Semantic MediaWiki. Podrobný popis, jak používat anotace a funkci parseru #ask, naleznete na stránkách nápovědy [https://www.semantic-mediawiki.org/wiki/Help:Getting_started ''Začínáme''], [https://www.semantic-mediawiki.org/wiki/Help:In-text_annotation ''Anotace uvnitř textu''] či [https://www.semantic-mediawiki.org/wiki/Help:Inline_queries ''inline dotazy''].",
-	"smw-editpage-annotation-disabled": "Na této stránce nejsou povoleny sémantické anotace uvnitř textu kvůli omezením jmenného prostoru. Podrobný popis, jak tento jmenný prostor povolit, najdete v [https://semantic-mediawiki.org/wiki/Help:Configuration nápovědě ke konfiguraci]."
+	"smw-sp-properties-header-label": "Seznam vlastností"
 }

@@ -4,7 +4,6 @@
  * @author Stephan Gambke
  *
  */
-/*global escape*/
 
 // initialise
 jQuery( function() {
@@ -164,11 +163,8 @@ window.ext.popupform = new function() {
 		var closeBtn = jQuery( "<div class='popupform-close'></div> " );
 
 		// initially hide background and waitIndicator
-		if (brokenChrome) {
-			background.css("background", "transparent");
-		} else {
-			background.css("opacity", 0.0);
-		}
+		if (brokenChrome) background.css("background", "transparent");
+		else background.css("opacity", 0.0);
 
 		waitIndicator.hide();
 		container.hide();
@@ -195,27 +191,22 @@ window.ext.popupform = new function() {
 		.appendTo( "body" );
 
 		// fade background in
-		if ( !brokenChrome ) {
-			background.fadeTo( 400, 0.3 );
-		}
+		if ( !brokenChrome ) background.fadeTo( 400, 0.3 );
 		fadeIn( waitIndicator );
 
 		// attach event handler to close button
 		closeBtn.click( handleCloseFrame );
 	}
 
-	function handleLoadFrame() {
+	function handleLoadFrame(){
 		var iframecontents = iframe.contents();
 
 		var containerAlreadyVisible = container.is( ':visible' );
 
 		if ( !containerAlreadyVisible ) {
 			// no need to hide it again
-			if ( brokenBrowser ) {
-				container[0].style.visibility = "hidden";
-			} else {
-				container[0].style.opacity = 0;
-			}
+			if ( brokenBrowser ) container[0].style.visibility = "hidden";
+			else container[0].style.opacity = 0;
 		}
 
 		container.show();
@@ -224,22 +215,16 @@ window.ext.popupform = new function() {
 		content = iframecontents.find("#gumax-content-body");
 
 		// normal skins use #content (e.g. Vector, Monobook)
-		if ( content.length === 0 ) {
-			content = iframecontents.find("#content");
-		}
+		if ( content.length == 0 ) content = iframecontents.find("#content");
 
 		// some skins use #mw_content (e.g. Modern)
-		if ( content.length === 0 ) {
-			content = iframecontents.find("#mw_content");
-		}
+		if ( content.length == 0 ) content = iframecontents.find("#mw_content");
 
 		var iframebody = content.closest("body");
 		var iframedoc = iframebody.parent();
 
 		// this is not a normal MW page (or it uses an unknown skin)
-		if ( content.length === 0 ) {
-			content = iframebody;
-		}
+		if ( content.length == 0 ) content = iframebody;
 
 		// the huge left margin looks ugly in Vector, reduce it
 		// (How does this look for other skins?)
@@ -284,7 +269,9 @@ window.ext.popupform = new function() {
 				var elem = jQuery(this);
 
 				// TODO: Does this really help?
-				if ( getStyle(this, "display") != "none" && ! (
+				if ( getStyle(this, "display") != "none"
+//					&& ( getStyle( this, "width") != "0px" || getStyle( this, "height") != "0px" )
+					&& ! (
 						( this.offsetLeft + elem.outerWidth(true) < 0 ) ||		// left of document
 						( this.offsetTop + elem.outerHeight(true) < 0 )  || // above document
 						( this.offsetLeft > 100000 ) ||		// right of document
@@ -344,9 +331,7 @@ window.ext.popupform = new function() {
 					if ( innersubmitprocessed ) {
 						clearInterval( interval );
 						innersubmitprocessed = false;
-						if ( submitok ) {
-							handleSubmitData( event );
-						}
+						if ( submitok ) handleSubmitData( event );
 					}
 
 				}, 10);
@@ -415,8 +400,8 @@ window.ext.popupform = new function() {
 		.not('a[href^="#"]')           // local links
 		.not('a.sfFancyBox')           // link to file upload
 		.click(function(event){
-			if ( event.result !== false ) {  // if not already caught by somebody else
-				closeFrameAndFollowLink( event.target.getAttribute('href') );
+			if ( event.result != false ) {  // if not already caught by somebody else
+				closeFrameAndFollowLink( event.target.getAttribute('href') )
 			}
 			return false;
 		});
@@ -453,7 +438,7 @@ window.ext.popupform = new function() {
 			var innerform = jQuery("<div>" + returnedData + "</div>").find("form");
 
 			// check if we got an error page
-			if ( innerform.length === 0 ) {
+			if ( innerform.length == 0 ) {
 
 				form.unbind( event );
 
@@ -485,15 +470,12 @@ window.ext.popupform = new function() {
 
 				var stop = url.indexOf("&", start);
 
-				if ( stop >= 0 ) {
-					url = url.substr( 0, start - 1 ) + url.substr(stop + 1);
-				} else {
-					url = url.substr( 0, start - 1 );
-				}
+				if ( stop >= 0 ) url = url.substr( 0, start - 1 ) + url.substr(stop + 1);
+				else url = url.substr( 0, start - 1 );
 
 			}
 
-			form = jQuery('<form action="' + url + '" method="POST"><input type="hidden" name="action" value="purge"></form>')
+			var form = jQuery('<form action="' + url + '" method="POST"><input type="hidden" name="action" value="purge"></form>')
 			.appendTo('body');
 
 			form
@@ -514,11 +496,11 @@ window.ext.popupform = new function() {
 		var oldContW = content.width();
 		var oldContH = content.height();
 
-		var availW = Math.floor( jQuery(window).width() * 0.8 );
-		var availH = Math.floor( jQuery(window).height() * 0.8 );
+		var availW = Math.floor( jQuery(window).width() * .8 );
+		var availH = Math.floor( jQuery(window).height() * .8 );
 
-		var emergencyW = Math.floor( jQuery(window).width() * 0.85 );
-		var emergencyH = Math.floor( jQuery(window).height() * 0.85 );
+		var emergencyW = Math.floor( jQuery(window).width() * .85 );
+		var emergencyH = Math.floor( jQuery(window).height() * .85 );
 
 		// FIXME: these might not be the true values
 		var scrollW = 25;
@@ -675,9 +657,10 @@ window.ext.popupform = new function() {
 				.width( frameW )
 				.height ( frameH );
 
-				container[0].style.top = (Math.floor(( - frameH ) / 2)) + "px";
-				container[0].style.left = (Math.floor(( - frameW ) / 2)) + "px";
-
+				with ( container[0].style ) {
+					top = (Math.floor(( - frameH ) / 2)) + "px";
+					left = (Math.floor(( - frameW ) / 2)) + "px";
+				}
 
 				setTimeout(function(){
 
@@ -725,7 +708,7 @@ window.ext.popupform = new function() {
 
 		if ( jQuery.browser.mozilla ) {
 			body
-			.css('overflow', 'auto');
+			.css('overflow', 'auto')
 		}
 
 		return true;
@@ -773,16 +756,11 @@ window.ext.popupform = new function() {
 		if ( brokenBrowser ){
 
 			elem.show();
-			if ( callback ) {
-				callback();
-			}
+			if ( callback ) callback();
 		} else {
 			// what an ugly hack
-			if ( elem === waitIndicator ) {
-				elem.fadeIn( 200, callback );
-			} else {
-				elem.fadeIn( callback );
-			}
+			if ( elem === waitIndicator ) elem.fadeIn( 200, callback );
+			else elem.fadeIn( callback );
 		}
 	}
 
@@ -790,16 +768,11 @@ window.ext.popupform = new function() {
 		// no fading for broken browsers
 		if ( brokenBrowser ){
 			elem.hide();
-			if ( callback ) {
-				callback();
-			}
+			if ( callback ) callback();
 		} else {
 			// what an ugly hack
-			if ( elem === waitIndicator ) {
-				elem.fadeOut( 200, callback );
-			} else {
-				elem.fadeOut( callback );
-			}
+			if ( elem === waitIndicator ) elem.fadeOut( 200, callback );
+			else elem.fadeOut( callback );
 		}
 	}
 
@@ -807,15 +780,10 @@ window.ext.popupform = new function() {
 		// no fading for broken browsers
 		if ( brokenBrowser ){
 
-			if (target > 0) {
-				elem[0].style.visibility = "visible";
-			} else {
-				elem[0].style.visibility = "hidden";
-			}
+			if (target > 0) elem[0].style.visibility = "visible";
+			else  elem[0].style.visibility = "hidden";
 
-			if ( callback ) {
-				callback();
-			}
+			if ( callback ) callback();
 
 		} else {
 			elem.fadeTo(time, target, callback);
@@ -826,4 +794,4 @@ window.ext.popupform = new function() {
 	this.handlePopupFormInput = handlePopupFormInput;
 	this.handlePopupFormLink = handlePopupFormLink;
 	this.adjustFrameSize = adjustFrameSize;
-}();
+};
