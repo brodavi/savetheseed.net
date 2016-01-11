@@ -152,3 +152,13 @@ require_once "$IP/extensions/ConfirmAccount/ConfirmAccount.php";
  	'TermsOfService'  => array( 'enabled' => false ),
  );
 
+
+# Get the wiki sending e-mails to people when it needs to
+$wgSMTP = array(
+	'host'		=>	'ssl://mail.redmountainmakers.org',
+	'IDHost'	=>	'redmountainmakers.org',
+	'port'		=>	465,
+	'username'	=>	'outgoing@redmountainmakers.org',
+	'password'	=>	'Arduino2015',
+	'auth'		=>	 true
+);
