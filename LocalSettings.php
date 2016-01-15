@@ -150,12 +150,12 @@ $egSemanticSignupSettings['botName'] = 'Admin';
 
 # Allow requiring new users to confirm themselves, etc.
 require_once "$IP/extensions/ConfirmAccount/ConfirmAccount.php";
- $wgMakeUserPageFromBio = true;
+ $wgMakeUserPageFromBio = false;
  $wgAutoWelcomeNewUsers = false;
  $wgConfirmAccountRequestFormItems = array(
  	'UserName'        => array( 'enabled' => true ),
  	'RealName'        => array( 'enabled' => true ),
- 	'Biography'       => array( 'enabled' => true, 'minWords' => 50 ),
+ 	'Biography'       => array( 'enabled' => true, 'minWords' => 2 ),
  	'AreasOfInterest' => array( 'enabled' => false ),
  	'CV'              => array( 'enabled' => false ),
  	'Notes'           => array( 'enabled' => true ),
