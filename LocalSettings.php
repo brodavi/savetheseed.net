@@ -136,6 +136,17 @@ $wgShowExceptionDetails = true;
 require_once( "$IP/extensions/SemanticBundle/SemanticBundleSettings.php" );
 require_once( "$IP/extensions/SemanticBundle/SemanticBundle.php" );
 
+require_once( "$IP/extensions/SemanticSignup/SemanticSignup.php" );
+#require Real Name
+$egSemanticSignupSettings['requireName'] = true;
+
+#use form:user to generate a user page throutgh the account request page
+$egSemanticSignupSettings['formName'] = 'User';
+
+#The name of the user to automatically create the user page with.
+# This user needs sufficient privileges to create an user account
+# as well as creating new pages in the User: namespace.
+$egSemanticSignupSettings['botName'] = 'Admin';
 
 # Allow requiring new users to confirm themselves, etc.
 require_once "$IP/extensions/ConfirmAccount/ConfirmAccount.php";
