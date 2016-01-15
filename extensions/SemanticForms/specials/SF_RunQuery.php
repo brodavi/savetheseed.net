@@ -32,7 +32,7 @@ class SFRunQuery extends IncludableSpecialPage {
 
 	function printPage( $form_name, $embedded = false ) {
 		global $wgOut, $wgRequest, $sfgFormPrinter, $wgParser, $sfgRunQueryFormAtTop;
-		global $wgUser, $wgTitle;
+		global $wgUser;
 
 		// Get contents of form-definition page.
 		$form_title = Title::makeTitleSafe( SF_NS_FORM, $form_name );
@@ -96,7 +96,7 @@ class SFRunQuery extends IncludableSpecialPage {
 			}
 
 			$wgParser->mOptions = ParserOptions::newFromUser( $wgUser );
-			$resultsText = $wgParser->parse( $data_text, $wgTitle, $wgParser->mOptions )->getText();
+			$resultsText = $wgParser->parse( $data_text, $this->getTitle(), $wgParser->mOptions )->getText();
 		}
 
 		// Get the full text of the form.
@@ -127,13 +127,17 @@ END;
 		if ( $wgRequest->getVal( 'additionalquery' ) == 'false' ) {
 			$text .= $resultsText;
 		} elseif ( $sfgRunQueryFormAtTop ) {
+			$text .= Html::openElement( 'div', array( 'class' => 'sf-runquery-formcontent' ) );
 			$text .= $fullFormText;
 			$text .= $dividerText;
+			$text .= Html::closeElement( 'div' );
 			$text .= $resultsText;
 		} else {
 			$text .= $resultsText;
+			$text .= Html::openElement( 'div', array( 'class' => 'sf-runquery-formcontent' ) );
 			$text .= $additionalQueryHeader;
 			$text .= $fullFormText;
+			$text .= Html::closeElement( 'div' );
 		}
 
 		if ( $embedded ) {
@@ -145,7 +149,7 @@ END;
 
 		// Now write everything to the screen.
 		$wgOut->addHTML( $text );
-		SFUtils::addJavascriptAndCSS( $embedded ? $wgParser : null );
+		SFUtils::addFormRLModules( $embedded ? $wgParser : null );
 		$script = "\t\t" . '<script type="text/javascript">' . "\n" . $javascript_text . '</script>' . "\n";
 		if ( $embedded ) {
 			$wgParser->getOutput()->addHeadItem( $script );
@@ -153,7 +157,12 @@ END;
 			$wgOut->addScript( $script );
 			$po = $wgParser->getOutput();
 			if ( $po ) {
-				$wgOut->addParserOutputNoText( $po );
+				// addParserOutputMetadata was introduced in 1.24 when addParserOutputNoText was deprecated
+				if( method_exists( $wgOut, 'addParserOutputMetadata' ) ){
+					$wgOut->addParserOutputMetadata( $po );
+				} else {
+					$wgOut->addParserOutputNoText( $po );
+				}
 			}
 		}
 
@@ -168,5 +177,9 @@ END;
 				$wgOut->setPageTitle( $s );
 			}
 		}
+	}
+
+	protected function getGroupName() {
+		return 'sf_group';
 	}
 }

@@ -10,95 +10,7 @@
  * @author Harold Solbrig
  * @author Eugene Mednikov
  */
-
-/**
- * combobox()
- */
-(function(jQuery) {
-	jQuery.widget("ui.combobox", {
-		_create: function() {
-			var self = this;
-			var select = this.element.hide();
-			var name= select[0].name;
-			var id = select[0].id;
-			var curval = select[0].options[0].value;
-			curval = curval.replace('"', '&quot;' );
-			var input = jQuery("<input id=\"" + id + "\" type=\"text\" name=\"" + name + "\" value=\"" + curval + "\">")
-				.insertAfter(select)
-				.attr("tabIndex", select.attr("tabIndex"))
-				.attr("autocompletesettings", select.attr("autocompletesettings"))
-				.css("width", select.attr("comboboxwidth"))
-				.autocomplete({
-					source: function(request, response) {
-						var sfgAutocompleteOnAllChars = mw.config.get( 'sfgAutocompleteOnAllChars' );
-						if ( sfgAutocompleteOnAllChars ) {
-							var matcher = new RegExp(request.term, "i");
-						} else {
-							var matcher = new RegExp("\\b" + request.term, "i");
-						}
-						response(select.children("option").map(function() {
-							var text = jQuery(this).text();
-							if (this.value && (!request.term || matcher.test(text))) {
-								return {
-									id: this.value,
-									label: text,
-									value: text
-								};
-							}
-						}));
-					},
-					delay: 0,
-					change: function(event, ui) {
-						if (!ui.item) {
-							if (select.attr("existingvaluesonly") == 'true') {
-								// remove invalid value, as it didn't match anything
-								jQuery(this).val("");
-							}
-							return false;
-						}
-						select.val(ui.item.id);
-						self._trigger("selected", event, {
-							item: select.find("[value='" + ui.item.id.replace("'", "\\'") + "']")
-						});
-
-					},
-					minLength: 0
-				})
-			.addClass("ui-widget ui-widget-content ui-corner-left sfComboBoxActual");
-		input.attr("origname", select.attr("origname"));
-		jQuery('<button type="button">&nbsp;</button>')
-			.attr("tabIndex", -1)
-			.attr("title", "Show All Items")
-			.insertAfter(input)
-			.button({
-				icons: {
-					primary: "ui-icon-triangle-1-s"
-				},
-				text: false
-			}).removeClass("ui-corner-all")
-			.addClass("ui-corner-right ui-button-icon sfComboBoxActual")
-			// Add some inline CSS, to override CSS set by the
-			// jquery.ui.tabs module - this is necessary if form is
-			// used in conjunction with the Header Tabs extension.
-			// 'cssText' attribute is needed because the normal
-			// .css() calls don't allow for setting "!important",
-			// which is needed to counteract "!important" coming
-			// from the jquery.ui.tabs CSS.
-			.css('cssText', 'padding: 0 !important; margin: 0 !important; -moz-border-radius: 0; -webkit-border-radius: 0; width: 1.7em;')
-			.click(function() {
-				// close if already visible
-				if (input.autocomplete("widget").is(":visible")) {
-					input.autocomplete("close");
-					return;
-				}
-				// pass empty string as value to search for, displaying all results
-				input.autocomplete("search", "");
-				input.focus();
-			});
-		}
-	});
-
-})(jQuery);
+ /*global sfgShowOnSelect, sfgFieldProperties, sfgCargoFields, validateAll, alert, sf*/
 
 // Activate autocomplete functionality for the specified field
 (function(jQuery) {
@@ -107,17 +19,19 @@
 	jQuery.ui.autocomplete.prototype._renderItem = function( ul, item) {
 
 		var delim = this.element.context.delimiter;
-		if ( delim == null ) {
+		var term;
+		if ( delim === null ) {
 			term = this.term;
 		} else {
 			term = this.term.split( delim ).pop();
 		}
 		var re = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term.replace(/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi, "\\$1") + ")(?![^<>]*>)(?![^&;]+;)", "gi");
 		var loc = item.label.search(re);
+		var t;
 		if (loc >= 0) {
-			var t = item.label.substr(0, loc) + '<strong>' + item.label.substr(loc, term.length) + '</strong>' + item.label.substr(loc + term.length);
+			t = item.label.substr(0, loc) + '<strong>' + item.label.substr(loc, term.length) + '</strong>' + item.label.substr(loc + term.length);
 		} else {
-			var t = item.label;
+			t = item.label;
 		}
 		return jQuery( "<li></li>" )
 			.data( "item.autocomplete", item )
@@ -141,7 +55,7 @@
 	var data_source = field_values[0];
 	if (field_values[1] == 'list') {
 		delimiter = ",";
-		if (field_values[2] != null) {
+		if (field_values[2] !== null && field_values[2] !== undefined) {
 			delimiter = field_values[2];
 		}
 	}
@@ -151,7 +65,7 @@
 	// This doesn't cover the case of a delimiter that's a newline
 	// plus something else, like ".\n" or "\n\n", but as far as we
 	// know no one has yet needed that.
-	if ( delimiter != null ) {
+	if ( delimiter !== null && delimiter !== undefined ) {
 		if ( delimiter == "\\n" ) {
 			delimiter = "\n";
 		} else {
@@ -166,10 +80,11 @@
 	jQuery.extend( jQuery.ui.autocomplete, {
 	    filter: function(array, term) {
 		var sfgAutocompleteOnAllChars = mw.config.get( 'sfgAutocompleteOnAllChars' );
-		if ( sfgAutocompleteOnAllChars ) {
-			var matcher = new RegExp(jQuery.ui.autocomplete.escapeRegex(term), "i" );
+		var matcher;
+    if ( sfgAutocompleteOnAllChars ) {
+			matcher = new RegExp(jQuery.ui.autocomplete.escapeRegex(term), "i" );
 		} else {
-			var matcher = new RegExp("\\b" + jQuery.ui.autocomplete.escapeRegex(term), "i" );
+			matcher = new RegExp("\\b" + jQuery.ui.autocomplete.escapeRegex(term), "i" );
 		}
 		return jQuery.grep( array, function(value) {
 			return matcher.test( value.label || value.value || value );
@@ -177,23 +92,22 @@
 	    }
 	});
 
-    values = jQuery(this).data('autocompletevalues');
+   var values = jQuery(this).data('autocompletevalues');
     if ( !values ) {
 	var sfgAutocompleteValues = mw.config.get( 'sfgAutocompleteValues' );
 	values = sfgAutocompleteValues[field_string];
     }
-    if (values != null) {
+    var split = function (val) {
+		return val.split(delimiter);
+	};
+	var extractLast = function (term) {
+		return split(term).pop();
+	};
+    if (values !== null && values !== undefined) {
 	// Local autocompletion
 
-	if (delimiter != null) {
+	if (delimiter !== null && delimiter !== undefined) {
 		// Autocomplete for multiple values
-
-		function split(val) {
-			return val.split(delimiter);
-		}
-		function extractLast(term) {
-			return split(term).pop();
-		}
 
 		var thisInput = jQuery(this);
 
@@ -237,13 +151,7 @@
 	var data_type = jQuery(this).attr("autocompletedatatype");
 	myServer += "?action=sfautocomplete&format=json&" + data_type + "=" + data_source;
 
-	if (delimiter != null) {
-		function split(val) {
-			return val.split(delimiter);
-		}
-		function extractLast(term) {
-			return split(term).pop();
-		}
+	if (delimiter !== null && delimiter !== undefined) {
 		jQuery(this).autocomplete({
 			source: function(request, response) {
 				jQuery.getJSON(myServer, {
@@ -252,8 +160,8 @@
 					response(jQuery.map(data.sfautocomplete, function(item) {
 						return {
 							value: item.title
-						}
-					}))
+						};
+					}));
 				});
 			},
 			search: function() {
@@ -293,8 +201,8 @@
 						response(jQuery.map(data.sfautocomplete, function(item) {
 							return {
 								value: item.title
-							}
-						}))
+							};
+						}));
 					}
 				});
 			},
@@ -338,7 +246,9 @@ function setupSF() {
 // @param param The parameter object given to the validation function
 jQuery.fn.SemanticForms_registerInputValidation = function(valfunction, param) {
 
-	if ( ! this.attr("id") ) return this;
+	if ( ! this.attr("id") ) {
+		return this;
+	}
 
 	if ( ! jQuery("#sfForm").data("SemanticForms") ) {
 		setupSF();
@@ -367,7 +277,9 @@ jQuery.fn.SemanticForms_registerInputValidation = function(valfunction, param) {
 jQuery.fn.SemanticForms_registerInputInit = function( initFunction, param, noexecute ) {
 
 	// return if element has no id
-	if ( ! this.attr("id") ) return this;
+	if ( ! this.attr("id") ) {
+		return this;
+	}
 
 	// setup data structure if necessary
 	if ( ! jQuery("#sfForm").data("SemanticForms") ) {
@@ -377,7 +289,7 @@ jQuery.fn.SemanticForms_registerInputInit = function( initFunction, param, noexe
 	// if no initialization function for this input was registered yet,
 	// create entry
 	if ( ! jQuery("#sfForm").data("SemanticForms").initFunctions[this.attr("id")] ) {
-		jQuery("#sfForm").data("SemanticForms").initFunctions[this.attr("id")] = new Array();
+		jQuery("#sfForm").data("SemanticForms").initFunctions[this.attr("id")] = [];
 	}
 
 	// record initialization function
@@ -388,10 +300,10 @@ jQuery.fn.SemanticForms_registerInputInit = function( initFunction, param, noexe
 
 	// execute initialization if input is not part of multipleTemplateStarter
 	// and if not forbidden
-	if ( this.closest(".multipleTemplateStarter").length == 0 && !noexecute) {
+	if ( this.closest(".multipleTemplateStarter").length === 0 && !noexecute) {
 		var input = this;
 		// ensure initFunction is only exectued after doc structure is complete
-		jQuery(function() {initFunction ( input.attr("id"), param )});
+		jQuery(function() {initFunction ( input.attr("id"), param );});
 	}
 
 	return this;
@@ -431,7 +343,11 @@ jQuery.fn.SemanticForms_unregisterInputInit = function() {
 
 // Display a div that would otherwise be hidden by "show on select".
 function showDiv(div_id, instanceWrapperDiv, speed) {
-	var elem = jQuery('[id="' + div_id + '"]', instanceWrapperDiv);
+	if ( instanceWrapperDiv != null ) {
+		var elem = jQuery('[data-origID="' + div_id + '"]', instanceWrapperDiv);
+	} else {
+		var elem = jQuery('#' + div_id);
+	}
 
 	elem
 	.find(".hiddenBySF")
@@ -463,7 +379,11 @@ function hideDiv(div_id, instanceWrapperDiv, speed) {
 		alert( "Warning: this form has \"show on select\" pointing to an invalid element ID (\"" + div_id + "\") - IDs in HTML cannot contain spaces." );
 	}
 
-	var elem = jQuery('[id="' + div_id + '"]', instanceWrapperDiv);
+	if ( instanceWrapperDiv != null ) {
+		var elem = instanceWrapperDiv.find('[data-origID=' + div_id + ']');
+	} else {
+		var elem = jQuery('#' + div_id);
+	}
 	elem.find("span, div").addClass('hiddenBySF');
 
 	elem.each( function() {
@@ -501,11 +421,13 @@ function showDivIfSelected(options, div_id, inputVal, instanceWrapperDiv, initPa
 jQuery.fn.showIfSelected = function(initPage) {
 	var inputVal = this.val();
 	var sfgShowOnSelect = mw.config.get( 'sfgShowOnSelect' );
-	var showOnSelectVals = sfgShowOnSelect[this.attr("id")];
 
 	var instanceWrapperDiv = this.closest('.multipleTemplateInstance');
-	if ( instanceWrapperDiv.length == 0 ) {
+	if ( instanceWrapperDiv.length === 0 ) {
 		instanceWrapperDiv = null;
+		var showOnSelectVals = sfgShowOnSelect[this.attr("id")];
+	} else {
+		var showOnSelectVals = sfgShowOnSelect[this.attr("data-origID")];
 	}
 
 	if ( showOnSelectVals !== undefined ) {
@@ -537,11 +459,13 @@ jQuery.fn.showDivIfChecked = function(options, div_id, instanceWrapperDiv, initP
 // inputs.
 jQuery.fn.showIfChecked = function(initPage) {
 	var sfgShowOnSelect = mw.config.get( 'sfgShowOnSelect' );
-	var showOnSelectVals = sfgShowOnSelect[this.attr("id")];
 
 	var instanceWrapperDiv = this.closest('.multipleTemplateInstance');
-	if ( instanceWrapperDiv.length == 0 ) {
+	if ( instanceWrapperDiv.length === 0 ) {
 		instanceWrapperDiv = null;
+		var showOnSelectVals = sfgShowOnSelect[this.attr("id")];
+	} else {
+		var showOnSelectVals = sfgShowOnSelect[this.attr("data-origID")];
 	}
 
 	if ( showOnSelectVals !== undefined ) {
@@ -556,19 +480,24 @@ jQuery.fn.showIfChecked = function(initPage) {
 };
 
 // Used for handling 'show on select' for the 'checkbox' input.
-jQuery.fn.showIfCheckedCheckbox = function(initPage) {
+jQuery.fn.showIfCheckedCheckbox = function(partOfMultiple, initPage) {
 	var sfgShowOnSelect = mw.config.get( 'sfgShowOnSelect' );
-	var div_id = sfgShowOnSelect[this.attr("id")];
-
-	var instanceWrapperDiv = this.closest('.multipleTemplateInstance');
-	if ( instanceWrapperDiv.length == 0 ) {
-		instanceWrapperDiv = null;
+	
+	if (partOfMultiple) {
+		var divIDs = sfgShowOnSelect[this.attr("data-origID")];
+		var instanceWrapperDiv = this.closest(".multipleTemplateInstance");
+	} else {
+		var divIDs = sfgShowOnSelect[this.attr("id")];
+		var instanceWrapperDiv = null;
 	}
 
-	if (jQuery(this).is(":checked")) {
-		showDiv(div_id, instanceWrapperDiv, initPage ? 0 : 'fast' );
-	} else {
-		hideDiv(div_id, instanceWrapperDiv, initPage ? 0 : 'fast' );
+	for ( var i = 0; i < divIDs.length; i++ ) {
+		var divID = divIDs[i];
+		if (jQuery(this).is(":checked")) {
+			showDiv(divID, instanceWrapperDiv, initPage ? 0 : 'fast' );
+		} else {
+			hideDiv(divID, instanceWrapperDiv, initPage ? 0 : 'fast' );
+		}
 	}
 
 	return this;
@@ -578,9 +507,27 @@ jQuery.fn.showIfCheckedCheckbox = function(initPage) {
  * Validation functions
  */
 
-// Display an error message on the end of an input.
+// Set the error message for an input.
+jQuery.fn.setErrorMessage = function(msg, val) {
+	var container = this.find('.sfErrorMessages');
+	container.html($('<div>').addClass( 'errorMessage' ).text( mw.msg( msg, val ) ));
+};
+
+// Append an error message to the end of an input.
 jQuery.fn.addErrorMessage = function(msg, val) {
-	this.append(' ').append( $('<span>').addClass( 'errorMessage' ).text( mw.msg( msg, val ) ) );
+	this.find('input').addClass('inputError');
+	this.find('select2-container').addClass('inputError');
+	this.append($('<div>').addClass( 'errorMessage' ).text( mw.msg( msg, val ) ));
+};
+
+jQuery.fn.isAtMaxInstances = function() {
+	var numInstances = this.find("div.multipleTemplateInstance").length;
+	var maximumInstances = this.attr("maximumInstances");
+	if ( numInstances >= maximumInstances ) {
+		this.parent().setErrorMessage( 'sf_too_many_instances_error', maximumInstances );
+		return true;
+	}
+	return false;
 };
 
 jQuery.fn.validateNumInstances = function() {
@@ -596,16 +543,17 @@ jQuery.fn.validateNumInstances = function() {
 	} else {
 		return true;
 	}
-}
+};
 
 jQuery.fn.validateMandatoryField = function() {
 	var fieldVal = this.find(".mandatoryField").val();
-	if (fieldVal == null) {
-		var isEmpty = true;
+  var isEmpty;
+	if (fieldVal === null) {
+		isEmpty = true;
 	} else if (jQuery.isArray(fieldVal)) {
-		var isEmpty = (fieldVal.length == 0);
+		isEmpty = (fieldVal.length === 0);
 	} else {
-		var isEmpty = (fieldVal.replace(/\s+/, '') == '');
+		isEmpty = (fieldVal.replace(/\s+/, '') === '');
 	}
 	if (isEmpty) {
 		this.addErrorMessage( 'sf_blank_error' );
@@ -615,8 +563,145 @@ jQuery.fn.validateMandatoryField = function() {
 	}
 };
 
+jQuery.fn.validateUniqueField = function() {
+
+	var UNDEFINED = "undefined";
+	var field = this.find(".uniqueField");
+	var fieldVal = field.val();
+
+	if (typeof fieldVal === UNDEFINED || fieldVal.replace(/\s+/, '') === '') {
+		return true;
+	}
+
+	var fieldOrigVal = field.prop("defaultValue");
+	if (fieldVal === fieldOrigVal) {
+		return true;
+	}
+
+	var categoryFieldName = field.prop("id") + "_unique_for_category";
+	var categoryField = jQuery("[name=" + categoryFieldName + "]");
+	var category = categoryField.val();
+
+	var namespaceFieldName = field.prop("id") + "_unique_for_namespace";
+	var namespaceField = jQuery("[name=" + namespaceFieldName + "]");
+	var namespace = namespaceField.val();
+
+	var url = mw.config.get( 'wgScriptPath' ) + "/api.php?format=json&action=";
+
+	// SMW
+	var propertyFieldName = field.prop("id") + "_unique_property";
+	var propertyField = jQuery("[name=" + propertyFieldName + "]");
+	var property = propertyField.val();
+	if (typeof property !== UNDEFINED && property.replace(/\s+/, '') !== '') {
+
+		var query = "[[" + property + "::" + fieldVal + "]]";
+
+		if (typeof category !== UNDEFINED &&
+			category.replace(/\s+/, '') !== '') {
+			query += "[[Category:" + category + "]]";
+		}
+
+		if (typeof namespace !== UNDEFINED) {
+			if (namespace.replace(/\s+/, '') !== '') {
+				query += "[[:" + namespace + ":+]]";
+			} else {
+				query += "[[:+]]";
+			}
+		}
+
+		var conceptFieldName = field.prop("id") + "_unique_for_concept";
+		var conceptField = jQuery("[name=" + conceptFieldName + "]");
+		var concept = conceptField.val();
+		if (typeof concept !== UNDEFINED &&
+			concept.replace(/\s+/, '') !== '') {
+			query += "[[Concept:" + concept + "]]";
+		}
+
+		query += "|limit=1";
+		query = encodeURIComponent(query);
+
+		url += "ask&query=" + query;
+		var isNotUnique = true;
+		jQuery.ajax({
+			url: url,
+			dataType: 'json',
+			async: false,
+			success: function(data) {
+				if (data.query.meta.count === 0) {
+					isNotUnique = false;
+				}
+			}
+		});
+		if (isNotUnique) {
+			this.addErrorMessage( 'sf_not_unique_error' );
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	// Cargo
+	var cargoTableFieldName = field.prop("id") + "_unique_cargo_table";
+	var cargoTableField = jQuery("[name=" + cargoTableFieldName + "]");
+	var cargoTable = cargoTableField.val();
+	var cargoFieldFieldName = field.prop("id") + "_unique_cargo_field";
+	var cargoFieldField = jQuery("[name=" + cargoFieldFieldName + "]");
+	var cargoField = cargoFieldField.val();
+	if (typeof cargoTable !== UNDEFINED && cargoTable.replace(/\s+/, '') !== ''
+		&& typeof cargoField !== UNDEFINED
+		&& cargoField.replace(/\s+/, '') !== '') {
+
+		var query = "&where=" + cargoField + "+=+'" + fieldVal + "'";
+
+		if (typeof category !== UNDEFINED &&
+			category.replace(/\s+/, '') !== '') {
+			category = category.replace(/\s/, '_');
+			query += "+AND+cl_to=" + category + "+AND+cl_from=_pageID";
+			cargoTable += ",categorylinks";
+		}
+
+		if (typeof namespace !== UNDEFINED) {
+			query += "+AND+_pageNamespace=";
+			if (namespace.replace(/\s+/, '') !== '') {
+				var ns = mw.config.get('wgNamespaceIds')[namespace.toLowerCase()];
+				if (typeof ns !== UNDEFINED) {
+					query +=  ns;
+				}
+			} else {
+				query +=  "0";
+			}
+		}
+
+		query += "&limit=1";
+
+		url += "cargoquery&tables=" + cargoTable + "&fields=" + cargoField +
+			query;
+		var isNotUnique = true;
+		jQuery.ajax({
+			url: url,
+			dataType: 'json',
+			async: false,
+			success: function(data) {
+				if (data.cargoquery.length === 0) {
+					isNotUnique = false;
+				}
+			}
+		});
+		if (isNotUnique) {
+			this.addErrorMessage( 'sf_not_unique_error' );
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	return true;
+
+};
+
 jQuery.fn.validateMandatoryComboBox = function() {
-	if (this.find("input").val() == '') {
+	var combobox = this.find( "input.sfComboBox" );
+	if (combobox.val() === '') {
 		this.addErrorMessage( 'sf_blank_error' );
 		return false;
 	} else {
@@ -625,9 +710,9 @@ jQuery.fn.validateMandatoryComboBox = function() {
 };
 
 jQuery.fn.validateMandatoryDateField = function() {
-	if (this.find(".dayInput").val() == '' ||
-	    this.find(".monthInput").val() == '' ||
-	    this.find(".yearInput").val() == '') {
+	if (this.find(".dayInput").val() === '' ||
+	    this.find(".monthInput").val() === '' ||
+	    this.find(".yearInput").val() === '') {
 		this.addErrorMessage( 'sf_blank_error' );
 		return false;
 	} else {
@@ -650,7 +735,7 @@ jQuery.fn.validateMandatoryCheckboxes = function() {
 	// Get the number of checked checkboxes within this span - must
 	// be at least one.
 	var numChecked = this.find("input:checked").size();
-	if (numChecked == 0) {
+	if (numChecked === 0) {
 		this.addErrorMessage( 'sf_blank_error' );
 		return false;
 	} else {
@@ -666,7 +751,7 @@ jQuery.fn.validateURLField = function() {
 	var fieldVal = this.find("input").val();
 	// code borrowed from http://snippets.dzone.com/posts/show/452
 	var url_regexp = /(ftp|http|https|rtsp|news):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-	if (fieldVal == "" || url_regexp.test(fieldVal)) {
+	if (fieldVal === "" || url_regexp.test(fieldVal)) {
 		return true;
 	} else {
 		this.addErrorMessage( 'sf_bad_url_error' );
@@ -678,7 +763,7 @@ jQuery.fn.validateEmailField = function() {
 	var fieldVal = this.find("input").val();
 	// code borrowed from http://javascript.internet.com/forms/email-validation---basic.html
 	var email_regexp = /^\s*\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+\s*$/;
-	if (fieldVal == '' || email_regexp.test(fieldVal)) {
+	if (fieldVal === '' || email_regexp.test(fieldVal)) {
 		return true;
 	} else {
 		this.addErrorMessage( 'sf_bad_email_error' );
@@ -690,7 +775,7 @@ jQuery.fn.validateNumberField = function() {
 	var fieldVal = this.find("input").val();
 	// Handle "E notation"/scientific notation ("1.2e-3") in addition
 	// to regular numbers
-	if (fieldVal == '' ||
+	if (fieldVal === '' ||
 	fieldVal.match(/^\s*[\-+]?((\d+[\.,]?\d*)|(\d*[\.,]?\d+))([eE]?[\-\+]?\d+)?\s*$/)) {
 		return true;
 	} else {
@@ -703,7 +788,7 @@ jQuery.fn.validateDateField = function() {
 	// validate only if day and year fields are both filled in
 	var dayVal = this.find(".dayInput").val();
 	var yearVal = this.find(".yearInput").val();
-	if (dayVal == '' || yearVal == '') {
+	if (dayVal === '' || yearVal === '') {
 		return true;
 	} else if (dayVal.match(/^\d+$/) && dayVal <= 31) {
 		// no year validation, since it can also include
@@ -715,7 +800,63 @@ jQuery.fn.validateDateField = function() {
 	}
 };
 
+// Standalone pipes are not allowed, because they mess up the template
+// parsing; unless they're part of a call to a template or a parser function.
+jQuery.fn.checkForPipes = function() {
+	var fieldVal = this.find("input, textarea").val();
+	// We need to check for a few different things because this is
+	// called for a variety of different input types.
+	if ( fieldVal == undefined || fieldVal == '' ) {
+		fieldVal = this.text();
+	}
+	if ( fieldVal == undefined || fieldVal == '' ) {
+		return true;
+	}
+	if ( fieldVal.indexOf( '|' ) < 0 ) {
+		return true;
+	}
+
+	// There's at least one pipe - here's where the real work begins.
+	// We do a mini-parsing of the string to try to make sure that every
+	// pipe is within either double square brackets (links) or double
+	// curly brackets (parser functions, template calls).
+	// For simplicity's sake, turn all curly brackets into square brackets,
+	// so we only have to check for one thing.
+	// This will incorrectly allow bad text like "[[a|b}}", but hopefully
+	// that's not a major problem.
+	fieldVal = fieldVal.replace( /{{/g, '[[' );
+	fieldVal = fieldVal.replace( /}}/g, ']]' );
+	curIndex = 0;
+	while ( true ) {
+		nextPipe = fieldVal.indexOf( '|', curIndex );
+		if ( nextPipe < 0 ) {
+			return true;
+		}
+		nextDoubleBracketsStart = fieldVal.indexOf( '[[', curIndex );
+		if ( nextDoubleBracketsStart < 0 || nextPipe < nextDoubleBracketsStart ) {
+			// There's a pipe where it shouldn't be.
+			this.addErrorMessage( 'sf_pipe_error' );
+			return false;
+		}
+		nextDoubleBracketsEnd = fieldVal.indexOf( ']]', curIndex );
+		if ( nextDoubleBracketsEnd < 0 ) {
+			// Something is malformed - might as well throw an
+			// error.
+			this.addErrorMessage( 'sf_pipe_error' );
+			return false;
+		}
+		curIndex = nextDoubleBracketsEnd + 2;
+	}
+
+	// We'll never get here, but let's have this line anyway.
+	return true;
+}
+
 window.validateAll = function () {
+
+	// Hook that fires on form submission, before the validation.
+	mw.hook('sf.formValidationBefore').fire();
+
 	var num_errors = 0;
 
 	// Remove all old error messages.
@@ -726,35 +867,65 @@ window.validateAll = function () {
 	jQuery(".multipleTemplateStarter").find("span, div").addClass("hiddenBySF");
 
 	jQuery(".multipleTemplateList").each( function() {
-		if (! jQuery(this).validateNumInstances() ) num_errors += 1;
+		if (! jQuery(this).validateNumInstances() ) {
+			num_errors += 1;
+		}
 	});
 
 	jQuery("span.inputSpan.mandatoryFieldSpan").not(".hiddenBySF").each( function() {
-		if (! jQuery(this).validateMandatoryField() ) num_errors += 1;
+		if (! jQuery(this).validateMandatoryField() ) {
+			num_errors += 1;
+		}
 	});
 	jQuery("div.ui-widget.mandatory").not(".hiddenBySF").each( function() {
-		if (! jQuery(this).validateMandatoryComboBox() ) num_errors += 1;
+		if (! jQuery(this).validateMandatoryComboBox() ) {
+			num_errors += 1;
+		}
 	});
 	jQuery("span.dateInput.mandatoryFieldSpan").not(".hiddenBySF").each( function() {
-		if (! jQuery(this).validateMandatoryDateField() ) num_errors += 1;
+		if (! jQuery(this).validateMandatoryDateField() ) {
+			num_errors += 1;
+		}
 	});
 	jQuery("span.radioButtonSpan.mandatoryFieldSpan").not(".hiddenBySF").each( function() {
-		if (! jQuery(this).validateMandatoryRadioButton() ) num_errors += 1;
+		if (! jQuery(this).validateMandatoryRadioButton() ) {
+			num_errors += 1;
+		}
 	});
 	jQuery("span.checkboxesSpan.mandatoryFieldSpan").not(".hiddenBySF").each( function() {
-		if (! jQuery(this).validateMandatoryCheckboxes() ) num_errors += 1;
+		if (! jQuery(this).validateMandatoryCheckboxes() ) {
+			num_errors += 1;
+		}
+	});
+	jQuery("span.inputSpan.uniqueFieldSpan").not(".hiddenBySF").each( function() {
+		if (! jQuery(this).validateUniqueField() ) {
+			num_errors += 1;
+		}
+	});
+	jQuery("span.inputSpan, div.sfComboBox").not(".hiddenBySF, .freeText, .pageSection").each( function() {
+		if (! jQuery(this).checkForPipes() ) {
+			num_errors += 1;
+		}
 	});
 	jQuery("span.URLInput").not(".hiddenBySF").each( function() {
-		if (! jQuery(this).validateURLField() ) num_errors += 1;
+		if (! jQuery(this).validateURLField() ) {
+			num_errors += 1;
+		}
 	});
 	jQuery("span.emailInput").not(".hiddenBySF").each( function() {
-		if (! jQuery(this).validateEmailField() ) num_errors += 1;
+		if (! jQuery(this).validateEmailField() ) {
+			num_errors += 1;
+		}
 	});
 	jQuery("span.numberInput").not(".hiddenBySF").each( function() {
-		if (! jQuery(this).validateNumberField() ) num_errors += 1;
+		if (! jQuery(this).validateNumberField() ) {
+			num_errors += 1;
+		}
 	});
 	jQuery("span.dateInput").not(".hiddenBySF").each( function() {
-		if (! jQuery(this).validateDateField() ) num_errors += 1;
+		if (! jQuery(this).validateDateField() ) {
+			num_errors += 1;
+		}
 	});
 
 	// call registered validation functions
@@ -767,21 +938,22 @@ window.validateAll = function () {
 
 			// if input is not part of multipleTemplateStarter
 			if ( typeof sfdata.validationFunctions[i] !== 'undefined' &&
-				jQuery("#" + sfdata.validationFunctions[i].input).closest(".multipleTemplateStarter").length == 0 &&
-				jQuery("#" + sfdata.validationFunctions[i].input).closest(".hiddenBySF").length == 0 ) {
+				jQuery("#" + sfdata.validationFunctions[i].input).closest(".multipleTemplateStarter").length === 0 &&
+				jQuery("#" + sfdata.validationFunctions[i].input).closest(".hiddenBySF").length === 0 ) {
 
 				if (! sfdata.validationFunctions[i].valfunction(
 						sfdata.validationFunctions[i].input,
 						sfdata.validationFunctions[i].parameters)
-					)
+					) {
 					num_errors += 1;
+				}
 			}
 		}
 	}
 
 	if (num_errors > 0) {
 		// add error header, if it's not there already
-		if (jQuery("#form_error_header").size() == 0) {
+		if (jQuery("#form_error_header").size() === 0) {
 			jQuery("#contentSub").append('<div id="form_error_header" class="errorbox" style="font-size: medium"><img src="' + mw.config.get( 'sfgScriptPath' ) + '/skins/MW-Icon-AlertMark.png" />&nbsp;' + mw.message( 'sf_formerrors_header' ).escaped() + '</div><br clear="both" />');
 		}
 		scroll(0, 0);
@@ -791,10 +963,16 @@ window.validateAll = function () {
 		// multiple-instance templates, so that they aren't
 		// submitted by the form.
 		jQuery('.hiddenBySF').find("input, select, textarea").not(':disabled')
-		.attr('disabled', 'disabled')
+		.prop('disabled', true)
 		.addClass('disabledBySF');
+		//remove error box if it exists because there are no errors in the form now
+		jQuery("#contentSub").find(".errorbox").remove();
 	}
-	return (num_errors == 0);
+
+	// Hook that fires on form submission, after the validation.
+	mw.hook('sf.formValidationAfter').fire();
+
+	return (num_errors === 0);
 };
 
 /**
@@ -802,11 +980,20 @@ window.validateAll = function () {
  */
 
 jQuery.fn.addInstance = function( addAboveCurInstance ) {
+	var wrapper = this.closest(".multipleTemplateWrapper");
+	var multipleTemplateList = wrapper.find('.multipleTemplateList');
+
+	// If the nubmer of instances is already at the maximum allowed,
+	// exit here.
+	if ( multipleTemplateList.isAtMaxInstances() ) {
+		return false;
+	}
+
 	// Global variable.
 	num_elements++;
 
 	// Create the new instance
-	var new_div = this.closest(".multipleTemplateWrapper")
+	var new_div = wrapper
 		.find(".multipleTemplateStarter")
 		.clone()
 		.removeClass('multipleTemplateStarter')
@@ -817,6 +1004,14 @@ jQuery.fn.addInstance = function( addAboveCurInstance ) {
 		.slideDown('fast', function() {
 			jQuery(this).fadeTo('fast', 1);
 		});
+
+	// Add on a new attribute, "data-origID", representing the ID of all
+	// HTML elements that had an ID; and delete the actual ID attribute
+	// of any divs and spans (presumably, these exist only for the
+	// sake of "show on select"). We do the deletions because no two
+	// elements on the page are allowed to have the same ID.
+	new_div.find('[id!=""]').attr('data-origID', function() { return this.id; });
+	new_div.find('div[id!=""], span[id!=""]').removeAttr('id');
 
 	new_div.find('.hiddenBySF')
 	.removeClass('hiddenBySF')
@@ -853,12 +1048,13 @@ jQuery.fn.addInstance = function( addAboveCurInstance ) {
 
 				var sfdata = jQuery("#sfForm").data('SemanticForms');
 				if ( sfdata ) { // found data object?
+          var i;
 					if ( sfdata.initFunctions[old_id] ) {
 
 						// For every initialization method for
 						// input with id old_id, register the
 						// method for the new input.
-						for ( var i = 0; i < sfdata.initFunctions[old_id].length; i++ ) {
+						for ( i = 0; i < sfdata.initFunctions[old_id].length; i++ ) {
 
 							jQuery(this).SemanticForms_registerInputInit(
 								sfdata.initFunctions[old_id][i].initFunction,
@@ -871,7 +1067,7 @@ jQuery.fn.addInstance = function( addAboveCurInstance ) {
 					// For every validation method for the
 					// input with ID old_id, register it
 					// for the new input.
-					for ( var i = 0; i < sfdata.validationFunctions.length; i++ ) {
+					for ( i = 0; i < sfdata.validationFunctions.length; i++ ) {
 
 						if ( typeof sfdata.validationFunctions[i] !== 'undefined' &&
 							sfdata.validationFunctions[i].input == old_id ) {
@@ -895,7 +1091,7 @@ jQuery.fn.addInstance = function( addAboveCurInstance ) {
 		return this.id.replace(/span_/g, 'span_' + num_elements + '_');
 	});
 
-	// Add the new instance
+	// Add the new instance.
 	if ( addAboveCurInstance ) {
 		new_div.insertBefore(this.closest(".multipleTemplateInstance"));
 	} else {
@@ -904,15 +1100,9 @@ jQuery.fn.addInstance = function( addAboveCurInstance ) {
 			.append(new_div);
 	}
 
-	// Somewhat of a hack - remove the divs that the combobox() call
-	// adds on, so that we can just call combobox() again without
-	// duplicating anything. There's probably a nicer way to do this,
-	// that doesn't involve removing and then recreating divs.
-	new_div.find('.sfComboBoxActual').remove();
-
 	new_div.initializeJSElements(true);
 
-	// Initialize new inputs
+	// Initialize new inputs.
 	new_div.find("input, select, textarea").each(
 		function() {
 
@@ -932,7 +1122,7 @@ jQuery.fn.addInstance = function( addAboveCurInstance ) {
 							thatData[i].initFunction(
 								this.id,
 								thatData[i].parameters
-								)
+								);
 						}
 					}
 				}
@@ -940,6 +1130,9 @@ jQuery.fn.addInstance = function( addAboveCurInstance ) {
 		}
 	);
 
+	// Hook that fires each time a new template instance is added.
+	// The first parameter is a jQuery selection of the newly created instance div.
+	mw.hook('sf.addTemplateInstance').fire(new_div);
 };
 
 // The first argument is needed, even though it's an attribute of the element
@@ -947,10 +1140,24 @@ jQuery.fn.addInstance = function( addAboveCurInstance ) {
 // regular inputs, and the 'origName' attribute for inputs in multiple-instance
 // templates.
 jQuery.fn.setDependentAutocompletion = function( dependentField, baseField, baseValue ) {
-	propName = sfgFieldProperties[dependentField];
-	baseProp = sfgFieldProperties[baseField];
+	// Get data from either Cargo or Semantic MediaWiki.
 	var myServer = mw.config.get( 'wgScriptPath' ) + "/api.php";
-	myServer += "?action=sfautocomplete&format=json&property=" + propName + "&baseprop=" + baseProp + "&basevalue=" + baseValue;
+	myServer += "?action=sfautocomplete&format=json";
+	if ( sfgCargoFields.hasOwnProperty( dependentField ) ) {
+		var cargoTableAndFieldStr = sfgCargoFields[dependentField];
+		var cargoTableAndField = cargoTableAndFieldStr.split('|');
+		var cargoTable = cargoTableAndField[0];
+		var cargoField = cargoTableAndField[1];
+		var baseCargoTableAndFieldStr = sfgCargoFields[baseField];
+		var baseCargoTableAndField = baseCargoTableAndFieldStr.split('|');
+		var baseCargoTable = baseCargoTableAndField[0];
+		var baseCargoField = baseCargoTableAndField[1];
+		myServer += "&cargo_table=" + cargoTable + "&cargo_field=" + cargoField + "&is_array=true" + "&base_cargo_table=" + baseCargoTable + "&base_cargo_field=" + baseCargoField + "&basevalue=" + baseValue;
+	} else {
+		var propName = sfgFieldProperties[dependentField];
+		var baseProp = sfgFieldProperties[baseField];
+		myServer += "&property=" + propName + "&baseprop=" + baseProp + "&basevalue=" + baseValue;
+	}
 	var dependentValues = [];
 	var thisInput = jQuery(this);
 	// We use jQuery.ajax() here instead of jQuery.getJSON() so that the
@@ -971,7 +1178,7 @@ jQuery.fn.setDependentAutocompletion = function( dependentField, baseField, base
 		dataType: 'json',
 		async: false,
 		success: function(data) {
-			realData = data.sfautocomplete;
+			var realData = data.sfautocomplete;
 			jQuery.each(realData, function(key, val) {
 				dependentValues.push(val.title);
 			});
@@ -986,26 +1193,44 @@ jQuery.fn.setDependentAutocompletion = function( dependentField, baseField, base
  * for its 'dependent' field (e.g., for a city).
  */
 jQuery.fn.setAutocompleteForDependentField = function( partOfMultiple ) {
-	curValue = jQuery(this).val();
-	if ( curValue == null ) { return this; }
+	var curValue = jQuery(this).val();
+	if ( curValue === null ) { return this; }
 
-	nameAttr = partOfMultiple ? 'origName' : 'name';
-	name = jQuery(this).attr(nameAttr);
+	var nameAttr = partOfMultiple ? 'origName' : 'name';
+	var name = jQuery(this).attr(nameAttr);
 	var sfgDependentFields = mw.config.get( 'sfgDependentFields' );
+	var dependent_on_me = [];
 	for ( var i = 0; i < sfgDependentFields.length; i++ ) {
-		dependentFieldPair = sfgDependentFields[i];
+		var dependentFieldPair = sfgDependentFields[i];
 		if ( dependentFieldPair[0] == name ) {
-			dependentField = dependentFieldPair[1];
-			if ( partOfMultiple ) {
-				jQuery(this).closest(".multipleTemplateInstance")
-					.find('[origName="' + dependentField + '"]')
-					.setDependentAutocompletion(dependentField, name, curValue);
-			} else {
-				jQuery('[name="' + dependentField + '"]')
-					.setDependentAutocompletion(dependentField, name, curValue);
-			}
+			dependent_on_me.push(dependentFieldPair[1]);
 		}
 	}
+	dependent_on_me = jQuery.unique(dependent_on_me);
+
+	var self = this;
+	jQuery.each( dependent_on_me, function() {
+		var element, cmbox, tokens,
+			dependentField = this;
+
+		if ( partOfMultiple ) {
+			element = $( self ).closest( '.multipleTemplateInstance' )
+				.find('[origName="' + dependentField + '"]');
+		} else {
+			element = $('[name="' + dependentField + '"]');
+		}
+
+		if ( element.hasClass( 'sfComboBox' ) ) {
+			cmbox = new sf.select2.combobox();
+			cmbox.refresh(element);
+		} else if ( element.hasClass( 'sfTokens' ) ) {
+			tokens = new sf.select2.tokens();
+			tokens.refresh(element);
+		} else {
+			element.setDependentAutocompletion(dependentField, name, curValue);
+		}
+	});
+
 
 	return this;
 };
@@ -1034,9 +1259,9 @@ jQuery.fn.initializeJSElements = function( partOfMultiple ) {
 
 	this.find(".sfShowIfCheckedCheckbox").each( function() {
 		jQuery(this)
-		.showIfCheckedCheckbox(true)
+		.showIfCheckedCheckbox(partOfMultiple, true)
 		.click( function() {
-			jQuery(this).showIfCheckedCheckbox(false);
+			jQuery(this).showIfCheckedCheckbox(partOfMultiple, false);
 		});
 	});
 
@@ -1070,7 +1295,17 @@ jQuery.fn.initializeJSElements = function( partOfMultiple ) {
 	}
 
 	this.find('.autocompleteInput').attachAutocomplete();
-	this.find('.sfComboBox').combobox();
+
+	var combobox = new sf.select2.combobox();
+	this.find('.sfComboBox').not('#semantic_property_starter, .multipleTemplateStarter .sfComboBox, .select2-container').each( function() {
+		combobox.apply($(this));
+	});
+
+	var tokens = new sf.select2.tokens();
+	this.find('.sfTokens').not('.multipleTemplateStarter .sfTokens, .select2-container').each( function() {
+		tokens.apply($(this));
+	});
+
 	this.find('.autoGrow').autoGrow();
 	this.find('.sfFancyBox').fancybox({
 		'width'         : '75%',
@@ -1087,7 +1322,7 @@ jQuery.fn.initializeJSElements = function( partOfMultiple ) {
 	// a dependent field - which might involve changing the storage of
 	// "dependent fields" information from a global variable to a
 	// per-input HTML attribute.
-	this.find('input, select[class!="sfComboBox"]').each( function() {
+	this.find('input, select').each( function() {
 		jQuery(this)
 		.setAutocompleteForDependentField( partOfMultiple )
 		.blur( function() {
@@ -1102,13 +1337,28 @@ jQuery.fn.initializeJSElements = function( partOfMultiple ) {
 		.change( function() {
 			jQuery(this).setAutocompleteForDependentField( partOfMultiple );
 		});
+
+	this.find(".sfTreeInput").not(".multipleTemplateStarter .sfTreeInput").each( function() {
+		jQuery(this).applyDynatree();
+	});
+
 };
 
 var num_elements = 0;
 
 // Once the document has finished loading, set up everything!
-jQuery(document).ready(function() {
-	jQuery('body').initializeJSElements();
+jQuery(document).ready( function() {
+	// Initialize inputs created by #forminput.
+	if ( jQuery('.sfFormInput').length > 0 ) {
+		jQuery('.autocompleteInput').attachAutocomplete();
+	}
+
+	// Exit now if a Semantic Forms form is not present.
+	if ( jQuery('#sfForm').length == 0 ) {
+		return;
+	}
+
+	jQuery('body').initializeJSElements(false);
 
 	jQuery('.multipleTemplateInstance').initializeJSElements(true);
 	jQuery('.multipleTemplateAdder').click( function() {
@@ -1116,10 +1366,11 @@ jQuery(document).ready(function() {
 	});
 	jQuery('.multipleTemplateList').sortable({
 		axis: 'y',
-		handle: '.rearrangerImage'
+		handle: '.instanceRearranger'
 	});
 
-
 	// If the form is submitted, validate everything!
-	jQuery('#sfForm').submit( function() {return validateAll();} );
+	jQuery('#sfForm').submit( function() {
+		return validateAll();
+	} );
 });

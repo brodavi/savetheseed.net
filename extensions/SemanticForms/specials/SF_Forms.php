@@ -21,9 +21,13 @@ class SFForms extends SpecialPage {
 
 	function execute( $query ) {
 		$this->setHeaders();
-		list( $limit, $offset ) = wfCheckLimits();
+		list( $limit, $offset ) = $this->getRequest()->getLimitOffset();
 		$rep = new FormsPage();
 		return $rep->execute( $query );
+	}
+
+	protected function getGroupName() {
+		return 'pages';
 	}
 }
 
@@ -32,10 +36,7 @@ class SFForms extends SpecialPage {
  */
 class FormsPage extends QueryPage {
 	public function __construct( $name = 'Forms' ) {
-		// For MW 1.17
-		if ( $this instanceof SpecialPage ) {
-			parent::__construct( $name );
-		}
+		parent::__construct( $name );
 	}
 	
 	function getName() {
@@ -47,7 +48,7 @@ class FormsPage extends QueryPage {
 	function isSyndicated() { return false; }
 
 	function getPageHeader() {
-		$header = '<p>' . wfMessage( 'sf_forms_docu' )->text() . "</p><br />\n";
+		$header = Html::element( 'p', null, wfMessage( 'sf_forms_docu' )->text() );
 		return $header;
 	}
 
