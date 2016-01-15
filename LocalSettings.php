@@ -181,5 +181,9 @@ $wgNewUserMessageOnAutoCreate=false;
 $wgNewUserSuppressRC=false;
 $wgNewUserMinorEdit=true;
 
+#parser functions to run code in tables and infoboxes
+wfLoadExtension( 'ParserFunctions' );
+$wgPFEnableStringFunctions = true;
+
 #Delete batches of pages
 require_once "$IP/extensions/DeleteBatch/DeleteBatch.php";
