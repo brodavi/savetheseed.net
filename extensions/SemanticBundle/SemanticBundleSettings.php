@@ -109,4 +109,4 @@ require_once( "$IP/extensions/ReplaceText/ReplaceText.php" );
 # Also need to do some permission setup: http://www.mediawiki.org/wiki/Extension:Widgets#Folder_permissions
 # More info: https://www.mediawiki.org/wiki/Extension:Widgets#Installation
 require_once( "$IP/extensions/Widgets/Widgets.php" );
-#$wgGroupPermissions['sysop']['editwidgets'] = true;
+$wgGroupPermissions['sysop']['editwidgets'] = true;

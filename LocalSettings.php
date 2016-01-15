@@ -172,3 +172,5 @@ $wgSMTP = array(
 	'password'	=>	'Arduino2015',
 	'auth'		=>	 true
 );
+
+require_once( "$IP/extensions/Widgets/Widgets.php" );
