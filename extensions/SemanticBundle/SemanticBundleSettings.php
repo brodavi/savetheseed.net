@@ -83,7 +83,7 @@ include_once( "$IP/extensions/AdminLinks/AdminLinks.php" );
 
 # Arrays
 # More info: https://www.mediawiki.org/wiki/Extension:Arrays#Installation
-#include_once( "$IP/extensions/Arrays/Arrays.php" );
+include_once( "$IP/extensions/Arrays/Arrays.php" );
 
 # Data Transfer
 # More info: https://www.mediawiki.org/wiki/Extension:Data_Transfer#Installation
@@ -91,7 +91,7 @@ include_once( "$IP/extensions/DataTransfer/DataTransfer.php" );
 
 # External Data
 # More info: https://www.mediawiki.org/wiki/Extension:External_Data#Installation
-#include_once( "$IP/extensions/ExternalData/ExternalData.php" );
+include_once( "$IP/extensions/ExternalData/ExternalData.php" );
 
 # Header Tabs
 # More info: https://www.mediawiki.org/wiki/Extension:Header_Tabs#Installation
