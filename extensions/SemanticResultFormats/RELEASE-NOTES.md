@@ -1,16 +1,57 @@
 These are the release notes for the [Semantic Result Formats]
 (https://semantic-mediawiki.org/wiki/Semantic_Result_Formats) MediaWiki extension.
 
+## SRF 2.3 (2015-09-24)
+
+* Added table view to filtered format
+* Fixed eventcalendar format to return a truncated version of strings in tooltips
+* Internal code cleanup concerning the calendar format
+* Internal code cleanup concerning the tagcould format
+
+## SRF 2.2 (2015-07-30)
+
+* Fixed filtered format so that filters work for ol/ul type lists
+* Fixed gallery format by adding a required dependency for the carousel option to the widget parameter
+* Enhanced calendar format by adding the startmonth and startyear parameters
+
+## SRF 2.1.2 (2015-02-26)
+
+* Fixed bug in the slideshow format API
+
+## SRF 2.1.1 (2015-02-04)
+
+* Fixed various jQuery 1.9+ issues that appeared in connection with MW 1.24+ including `jquery.jqplot`, `jquery.fancybox`, and`jquery.jgrid`
+* Added replacement pattern for `%3A` in `gallery` overlay format (65abda9)
+* Fixed the usage of plain-text title attribute in `gallery` overlay format (f18f3ea8)
+* Added support for apostrophes in title text `gallery` overlay format (8dec4106)
+* #79 Fixed `event calender` class parameter usage
+* #73 Fixed `icalendar` escaping issues (as per RFC)
+
+## SRF 2.0 (2014-08-06)
+
+* #26 Fixed not showing up of graphvis legend when it should
+* #35 Fixed error in the gallary format for a null object
+* #37 Fixed error in the timeline format for named arguments
+* #43 Fixed graphname parameter in the graphviz format
+* [14daff1](https://github.com/SemanticMediaWiki/SemanticResultFormats/commit/14daff10350190634b96f644961beb15d0b29e09)
+commit added support for date/time values to the [excel format](https://semantic-mediawiki.org/wiki/Help:Excel_format)
+* #46 Added support for `format=graph` using Composer `mediawiki/graph-viz` package
+* #47 Added parameters 'filename' (the download file name for the generated file) and 'templatefile' (a template file
+      from the NS_FILE namespace used for formatting the generated file) to [excel format](https://semantic-mediawiki.org/wiki/Help:Excel_format)
+* #51 Fixed null title issue in Gallery.php for MW 1.23+
+* #52 Fixed `format=process` exception that was caused by missing message parameters
+* #53 Updated jQuery blockUI plugin to v.2.66.0-2013.10.09
+
 ## SRF 1.9.1 (2014-04-25)
 
 * #13 Fixed PHP warning when running PHP >=5.1 in strict mode
-* #16 Improved handling of empy values in the filtered format
+* #16 Improved handling of empty values in the filtered format
 * #19 Fixed duplicate headers bug in the excel format
 * #22 The excel format is now enabled by default when PHPExcel is loaded
 * #23 The PHPUnit bootstrap now works on Windows
 * #24 Added support for the new MediaWiki i18n JSON system
-* #25 Fixed resource path issue occuring on some installations
-* #27 Fixed error in the tagcloud format occuring when referencing a non-existing page
+* #25 Fixed resource path issue occurring on some installations
+* #27 Fixed error in the tagcloud format occurring when referencing a non-existing page
 * #31 Added template parameter to the timeline format
 
 ## SRF 1.9.0.1 (2014-01-17)

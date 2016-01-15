@@ -4,6 +4,7 @@
 			"Умар"
 		]
 	},
+	"prefs-srf-datatables-options": "DataTables нисяр",
 	"srf-module-loading": "Чуйолуш...",
 	"srf-paramdesc-height": "Локхалла",
 	"srf-paramdesc-width": "Шоралла",
@@ -18,6 +19,8 @@
 	"srf_paramdesc_charttitle": "Диаграммин цӀе",
 	"srf-ui-gridview-label-info-tab": "Хаам",
 	"srf_paramdesc_heights": "Суьртан локхалла",
+	"srf-gallery-navigation-previous": "Хьалха йоьдург",
+	"srf-gallery-navigation-next": "ТӀаьхьа йогӀург",
 	"srf_paramdesc_graphname": "Корта",
 	"srf-ui-datatables-label-conditions": "Хьал",
 	"srf-ui-datatables-label-parameters": "Параметраш",
@@ -26,10 +29,13 @@
 	"srf-ui-datatables-label-multiselect-column-noneselectedtext": "Литтаран нисярш",
 	"srf-ui-datatables-label-sLoadingRecords": "Чуйолуш...",
 	"srf-ui-datatables-label-sProcessing": "Кечдар...",
-	"srf-ui-datatables-label-sSearch": "Лаха:",
+	"srf-ui-datatables-label-sSearch": "Лахар:",
 	"srf-ui-datatables-label-oPaginate-sFirst": "ЦхьалгӀаниг",
 	"srf-ui-datatables-label-oPaginate-sLast": "ТӀехьарниг",
-	"srf-ui-datatables-label-oPaginate-sNext": "Кхин дӀа",
+	"srf-ui-datatables-label-oPaginate-sNext": "ТӀаьхьа йогӀург",
+	"srf-ui-datatables-label-oPaginate-sPrevious": "Хьалха йоьдург",
+	"srf-filtered-selectorlabel-table": "Таблица",
+	"srf-ui-mediaplayer-label-play": "Йолаялита",
 	"srf-ui-mediaplayer-label-next": "Кхин дӀа",
 	"srf-excel-link": "Excel"
 }

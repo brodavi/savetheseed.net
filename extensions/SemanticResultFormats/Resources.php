@@ -50,7 +50,10 @@ return array(
 	'ext.jquery.fancybox' => $moduleTemplate + array(
 		'scripts' => 'resources/jquery/fancybox/jquery.fancybox-1.3.4.pack.js',
 		'styles'  => 'resources/jquery/fancybox/jquery.fancybox-1.3.4.css',
-		'dependencies' => 'ext.jquery.easing',
+		'dependencies' => array(
+			'ext.jquery.easing',
+			'ext.jquery.migration.browser'
+		)
 	),
 
 	// Multiselect
@@ -82,7 +85,10 @@ return array(
 			'resources/jquery/jqgrid/grid.locale-en.js'
 		),
 		'styles' => 'resources/jquery/jqgrid/ui.jqgrid.css',
-		'dependencies' => 'jquery.ui.core'
+		'dependencies' => array(
+			'jquery.ui.core',
+			'ext.jquery.migration.browser'
+		)
 	),
 
 	// Flot
@@ -90,6 +96,16 @@ return array(
 		'scripts' => array(
 			'resources/jquery/flot/jquery.flot.js',
 			'resources/jquery/flot/jquery.flot.selection.js'
+		)
+	),
+
+	// Provide migration tool to avoid jqplot to fail with
+	// $.browser is undefined jquery.jqplot.js:398 caused
+	// by jQuery 1.9+
+	// @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/356
+	'ext.jquery.migration.browser' => $moduleTemplate + array(
+		'scripts' => array(
+			'resources/jquery/ext.jquery.migration.browser.js'
 		)
 	),
 
@@ -180,8 +196,12 @@ return array(
 
 	// Sparkline
 	'ext.jquery.sparkline' => $moduleTemplate + array(
-		'scripts' => 'resources/jquery/jquery.sparkline.js'
+		'scripts' => 'resources/jquery/jquery.sparkline.js',
+		'dependencies' => array(
+			'ext.jquery.migration.browser'
+		)
 	),
+
 	'ext.srf.sparkline' => $formatModule + array(
 		'scripts' => 'sparkline/resources/ext.srf.sparkline.js',
 		'dependencies' => array(
@@ -267,7 +287,10 @@ return array(
 
 	// Dynamiccarousel
 	'ext.jquery.dynamiccarousel' => $moduleTemplate + array(
-		'scripts' => 'resources/jquery/jquery.dynamiccarousel.js'
+		'scripts' => 'resources/jquery/jquery.dynamiccarousel.js',
+		'dependencies' => array(
+			'ext.jquery.migration.browser'
+		)
 	),
 
 	// Pagewidget
@@ -290,7 +313,10 @@ return array(
 	// jQuery plugin specific declarations
 	'ext.jquery.jqplot.core' => $moduleTemplate + array(
 		'scripts' => 'resources/jquery/jqplot/jquery.jqplot.js',
-		'styles' => 'resources/jquery/jqplot/jquery.jqplot.css'
+		'styles' => 'resources/jquery/jqplot/jquery.jqplot.css',
+		'dependencies' => array(
+			'ext.jquery.migration.browser'
+		)
 	),
 
 	// excanvas is required only for pre- IE 9 versions
@@ -570,6 +596,7 @@ return array(
 	// jcarousel
 	'ext.jquery.jcarousel' => $moduleTemplate + array(
 		'scripts' => 'resources/jquery/jquery.jcarousel.js',
+		'dependencies' => 'ext.jquery.migration.browser'
 	),
 
 	// responsiveslides
@@ -707,6 +734,15 @@ return array(
 			'ext.srf.filtered'
 		),
 	),
+		
+	'ext.srf.filtered.table-view' => $formatModule + array(
+			'scripts' => array(
+					'Filtered/libs/ext.srf.filtered.table-view.js',
+			),
+			'dependencies' => array(
+					'ext.srf.filtered'
+			),
+	),
 
 	//
 	'ext.srf.filtered.calendar-view' => $formatModule + $calendarMessages + array(
@@ -757,6 +793,7 @@ return array(
 	),
 
 	// Tagcanvas module
+
 	'ext.jquery.tagcanvas' => $moduleTemplate + array(
 		'scripts' => 'resources/jquery/jquery.tagcanvas.js'
 	),
