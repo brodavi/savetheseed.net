@@ -187,3 +187,6 @@ $wgPFEnableStringFunctions = true;
 
 #Delete batches of pages
 require_once "$IP/extensions/DeleteBatch/DeleteBatch.php";
+
+#Enable listing subpages (with slashes) with <splist/>
+require_once("$IP/extensions/SubPageList3/SubPageList3.php");
