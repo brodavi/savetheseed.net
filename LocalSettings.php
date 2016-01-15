@@ -180,3 +180,6 @@ require_once "$IP/extensions/NewUserMessage/NewUserMessage.php";
 $wgNewUserMessageOnAutoCreate=false;
 $wgNewUserSuppressRC=false;
 $wgNewUserMinorEdit=true;
+
+#Delete batches of pages
+require_once "$IP/extensions/DeleteBatch/DeleteBatch.php";
