@@ -174,3 +174,9 @@ $wgSMTP = array(
 );
 
 require_once( "$IP/extensions/Widgets/Widgets.php" );
+
+#generate a user message on new user's talk page
+require_once "$IP/extensions/NewUserMessage/NewUserMessage.php";
+$wgNewUserMessageOnAutoCreate=false;
+$wgNewUserSuppressRC=false;
+$wgNewUserMinorEdit=true;
