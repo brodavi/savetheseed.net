@@ -190,3 +190,7 @@ require_once "$IP/extensions/DeleteBatch/DeleteBatch.php";
 
 #Enable listing subpages (with slashes) with <splist/>
 require_once("$IP/extensions/SubPageList3/SubPageList3.php");
+
+#Enable category tree using <categorytree> tag
+require_once "$IP/extensions/CategoryTree/CategoryTree.php";
+$wgUseAjax = true; # Recommended by CategoryTree docs
