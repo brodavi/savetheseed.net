@@ -18,7 +18,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 ## Uncomment this to disable output compression
 # $wgDisableOutputCompression = true;
 
-$wgSitename = "Sand Mountain Seed Bank";
+$wgSitename = "Save the Seed Network";
 $wgMetaNamespace = "Project";
 
 ## The URL base path to the directory containing the wiki;
@@ -29,7 +29,7 @@ $wgMetaNamespace = "Project";
 $wgScriptPath = "";
 
 ## The protocol and server name to use in fully-qualified URLs
-$wgServer = "http://semantic.redmountainmakers.org";
+$wgServer = "https://savetheseed.net";
 
 
 ## The URL path to static resources (images, scripts, etc.)
@@ -37,7 +37,7 @@ $wgResourceBasePath = $wgScriptPath;
 
 ## The URL path to the logo.  Make sure you change this from the default,
 ## or else you'll overwrite your logo when you upgrade!
-$wgLogo = "/images/4/4f/Banana.gif";
+$wgLogo = "/images/d/d7/SavetheSeed.png";
 
 ## UPO means: this is also a user preference option
 
@@ -72,6 +72,9 @@ $wgDBmysql5 = false;
 ## Shared memory settings
 $wgMainCacheType = CACHE_NONE;
 $wgMemCachedServers = array();
+
+##To increase from the standard 50M memory allowed so that large queries may be run
+$wgMemoryLimit = "100M";
 
 ## To enable image uploads, make sure the 'images' directory
 ## is writable, then set this to true:
@@ -120,6 +123,19 @@ $wgDiff3 = "/usr/bin/diff3";
 
 # The following permissions were set based on your choice in the installer
 $wgGroupPermissions['*']['edit'] = false;
+#new permissions
+##Users and confirmed users cant edit semiprotected but can delete
+$wgGroupPermissions['user']['editsemiprotected'] = false;
+$wgGroupPermissions['autoconfirmed']['delete'] = true;
+##moderators have edit privalidge of semiprotected,
+## delete well edited pages, and undelete
+$wgGroupPermissions['moderator']['editsemiprotected'] = true;
+$wgGroupPermissions['moderator']['editprotected'] = true;
+$wgGroupPermissions['moderator']['bigdelete'] = true;
+$wgGroupPermissions['moderator']['undelete'] = true;
+$wgGroupPermissions['moderator']['block']  = true;
+$wgGroupPermissions['moderator']['delete'] = true;
+
 
 ## Default skin: you can change the default skin. Use the internal symbolic
 ## names, ie 'vector', 'monobook':
@@ -131,7 +147,20 @@ $wgVectorUseIconWatch = true;
 # End of automatically generated settings.
 # Add more configuration options below.
 
-$wgShowExceptionDetails = true;
+## https://www.mediawiki.org/wiki/Manual:Short_URL
+$wgScriptPath = '';
+$wgArticlePath = '/wiki/$1';
+$wgUsePathInfo = true;
+
+# Do not leave this enabled on public sites
+# $wgShowExceptionDetails = true;
+
+# Enable site CSS to be shown on login, etc. pages
+# Currently this is used to expand the site logo to full-width
+# Note - be very careful not to allow unauthorized users to edit the CSS pages
+# as this is disabled by default due to security concerns.  List of CSS pages:
+# https://www.mediawiki.org/wiki/Manual:Interface/Stylesheets
+$wgAllowSiteCSSOnRestrictedPages = true;
 
 require_once( "$IP/extensions/SemanticBundle/SemanticBundleSettings.php" );
 require_once( "$IP/extensions/SemanticBundle/SemanticBundle.php" );
@@ -172,7 +201,6 @@ $wgSMTP = array(
 	'password'	=>	'Arduino2015',
 	'auth'		=>	 true
 );
-
 require_once( "$IP/extensions/Widgets/Widgets.php" );
 
 #generate a user message on new user's talk page
@@ -197,3 +225,8 @@ $wgUseAjax = true; # Recommended by CategoryTree docs
 
 #Cause external links to open in a new tab
 $wgExternalLinkTarget = '_blank';
+error_reporting( -1 );
+ini_set( 'display_errors', 1 );
+
+#Prevent page chaching on pages with __NOCACHE__
+require_once "$IP/extensions/MagicNoCache/MagicNoCache.php";
